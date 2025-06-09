@@ -19,9 +19,7 @@ public partial class CurvedBeltConveyor : Node3D, IBeltConveyor
 	[Export]
 	public string tag;
 	public string Tag { get => tag; set => tag = value; }
-	[Export]
-	private int updateRate = 100;
-	public int UpdateRate { get => updateRate; set => updateRate = value; }
+	float updateRate = 1;
 
 	Color beltColor = new Color(1, 1, 1, 1);
 	[Export]
@@ -169,7 +167,7 @@ public partial class CurvedBeltConveyor : Node3D, IBeltConveyor
 			if (enableComms && running && readSuccessful)
 			{
 				scan_interval += delta;
-				if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+				if (scan_interval > updateRate && readSuccessful)
 				{
 					scan_interval = 0;
 					Task.Run(ScanTag);

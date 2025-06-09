@@ -22,8 +22,7 @@ public partial class DiffuseSensor : Node3D
 	}
 	[Export]
 	Color collisionColor;
-	[Export]
-	private int updateRate = 100;
+	float updateRate = 1;
 	Color scanColor;
 	private bool isCommsConnected;
 	string tagDiffuseSensor;
@@ -76,7 +75,7 @@ public partial class DiffuseSensor : Node3D
 	{
 		// GD.Print("\n> [DiffuseSensor.cs] [_PhysicsProcess()]");
 		scan_interval += delta;
-		if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+		if (scan_interval > updateRate && readSuccessful)
 		{
 			// GD.Print("\n> [DiffuseSensor.cs] scan_interval");
 			PhysicsDirectSpaceState3D spaceState = GetWorld3D().DirectSpaceState;
@@ -147,7 +146,7 @@ public partial class DiffuseSensor : Node3D
 	{
 		try
 		{
-			Main.Write(tagDiffuseSensor, blocked);
+			await Main.Write(tagDiffuseSensor, blocked);
 		}
 		catch
 		{

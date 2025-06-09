@@ -1,26 +1,10 @@
 extends Node
 
+var opc_da_connected: bool = false
+var GLOBAL_UPDATE_RATE: int = 1000
+var main : Node
+
 signal simulation_started
 signal simulation_set_paused(paused)
 signal simulation_ended
 signal opc_da_comms_connected
-
-var opc_da_connected: bool = false
-
-var main : Node
-
-#func _ready() -> void:
-	#print("_ready")
-	#
-	#print("EditorInterface")
-	#
-	#main = get_node("scene_1")
-	#print("is_instance_valid(main)")
-	#print(is_instance_valid(main))
-	#
-	#print("is_instance_valid(owner)")
-	#print(is_instance_valid(owner))
-	#if is_instance_valid(owner):
-		#await owner.ready
-		#EditorInterface.set_main_screen_editor("3D")
-		#EditorInterface.open_scene_from_path("res://scene_1.tscn")

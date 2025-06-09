@@ -6,8 +6,7 @@ public partial class BladeStop : Node3D
 {
 	private bool isCommsConnected;
 
-	[Export]
-	private int updateRate = 100;
+	float updateRate = 1;
 	double scan_interval = 0;
 	bool readSuccessful = false;
 
@@ -103,7 +102,7 @@ public partial class BladeStop : Node3D
 			)
 			{
 				scan_interval += delta;
-				if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+				if (scan_interval > updateRate && readSuccessful)
 				{
 					scan_interval = 0;
 					Task.Run(ScanTag);

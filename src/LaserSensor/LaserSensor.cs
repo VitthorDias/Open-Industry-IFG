@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 public partial class LaserSensor : Node3D
 {
-	private int updateRate = 600;
-	[Export]
+	float updateRate = 1;
 	float distance = 10.0f;
 	[Export]
 	Color collisionColor;

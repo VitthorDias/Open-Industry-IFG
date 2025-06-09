@@ -29,28 +29,7 @@ public partial class StackLight : Node3D
 		}
 	}
 
-	int updateRate = 100;
-
-	int UpdateRate
-	{
-		get
-		{
-			return updateRate;
-		}
-		set
-		{
-			updateRate = value;
-
-			if (segmentsContainer != null)
-			{
-				foreach (StackSegment segment in segmentsContainer.GetChildren())
-				{
-					segment.updateRate = updateRate;
-				}
-			}
-		}
-	}
-
+	float updateRate = 1;
 
 	int segments = 1;
 	int Segments
@@ -132,12 +111,6 @@ public partial class StackLight : Node3D
 				{"name", "EnableComms"},
 				{"type", (int)Variant.Type.Bool},
 				{"usage", (int)PropertyUsageFlags.Default}
-			});
-		properties.Add(new Godot.Collections.Dictionary()
-			{
-				{"name", "UpdateRate"},
-				{"type", (int)Variant.Type.Int},
-				{"usage", (int)(EnableComms ? PropertyUsageFlags.Default : PropertyUsageFlags.NoEditor)}
 			});
 		properties.Add(new Godot.Collections.Dictionary()
 			{

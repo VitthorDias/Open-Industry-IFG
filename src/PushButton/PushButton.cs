@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 public partial class PushButton : Node3D
 {
 	private bool isCommsConnected;
-	[Export] int updateRate = 1500;
+	float updateRate = 1;
+
 	string text = "stop";
 	[Export]
 	String Text
@@ -84,7 +85,7 @@ public partial class PushButton : Node3D
 
 	bool readSuccessful = false;
 	bool running = false;
-	double scan_interval = 1500;
+	double scan_interval = 0;
 	string tagPushButton;
 	Root main;
 	public Root Main { get; set; }
@@ -190,7 +191,7 @@ public partial class PushButton : Node3D
 		if (newValue)
 		{
 			buttonMaterial.EmissionEnergyMultiplier = 1.0f;
-		}
+		} 
 		else
 		{
 			buttonMaterial.EmissionEnergyMultiplier = 0.0f;
