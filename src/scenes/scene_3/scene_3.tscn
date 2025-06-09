@@ -125,7 +125,7 @@ ButtonColor = Color(1, 0, 0, 1)
 transform = Transform3D(0.572283, -0.00259152, 5.36098e-13, 0.000639008, 2.32092, 0.00013751, -4.20774e-07, -0.00152827, 0.208831, -1.32842, -1.99271, 14.7451)
 
 [node name="Player" parent="." instance=ExtResource("6_7s5ma")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.62095, 0, 3.46271)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.80359, 0, 11.4425)
 
 [node name="CommsConfigMenu" parent="." instance=ExtResource("7_rusoi")]
 

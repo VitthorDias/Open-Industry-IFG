@@ -188,13 +188,21 @@ public partial class PushButton : Node3D
 	{
 		if (buttonMaterial == null) return;
 
+
+		var material = new StandardMaterial3D();
+
 		if (newValue)
 		{
 			buttonMaterial.EmissionEnergyMultiplier = 1.0f;
-		} 
+			if (textMesh.Text == "Iniciar" || textMesh.Text == "Ligar") material.AlbedoColor = new Color(0.2392f, 0.9059f, 0.1882f);
+			if (textMesh.Text == "Pausar" || textMesh.Text == "Desligar") material.AlbedoColor = new Color(0.9059f, 0.2392f, 0.1882f);
+			textMesh.Material = material;
+		}
 		else
 		{
 			buttonMaterial.EmissionEnergyMultiplier = 0.0f;
+			material.AlbedoColor = new Color(1.0f, 0.6588f, 0.0f); // Standard color
+			textMesh.Material = material;
 		}
 	}
 
