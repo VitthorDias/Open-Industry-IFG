@@ -33,28 +33,28 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08,
 transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 14.54)
 
 [node name="DiffuseSensor2" parent="Building" instance=ExtResource("4_1ljys")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, 10.7297)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, 11.3711)
 
 [node name="LegsStandDiffuseSensor2" parent="Building" instance=ExtResource("5_cf3kl")]
-transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 10.735)
+transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 11.3764)
 
 [node name="DiffuseSensor3" parent="Building" instance=ExtResource("4_1ljys")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, 6.11934)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, 6.94368)
 
 [node name="LegsStandDiffuseSensor3" parent="Building" instance=ExtResource("5_cf3kl")]
-transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 6.12467)
+transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 6.94901)
 
 [node name="DiffuseSensor4" parent="Building" instance=ExtResource("4_1ljys")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, 1.64306)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, 2.44028)
 
 [node name="LegsStandDiffuseSensor4" parent="Building" instance=ExtResource("5_cf3kl")]
-transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 1.64839)
+transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, 2.44561)
 
 [node name="DiffuseSensor5" parent="Building" instance=ExtResource("4_1ljys")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, -2.6511)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.722988, 0, -1, 0, -4.37114e-08, -6.49257, 1.15578, -1.90472)
 
 [node name="LegsStandDiffuseSensor5" parent="Building" instance=ExtResource("5_cf3kl")]
-transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, -2.64576)
+transform = Transform3D(0.99999, 0, 0, 0, 2.95813, 0, 0, 0, 0.152081, -6.28711, -2.01289, -1.89938)
 
 [node name="Conveyor2" parent="Building" instance=ExtResource("2_rb0b1")]
 transform = Transform3D(-1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, -4.68623, 0.821149, 8.46816)
@@ -76,7 +76,7 @@ Speed = 0.0
 transform = Transform3D(2, 0, 0, 0, 1, 1.23657e-15, 7.10543e-15, 6.18287e-16, 2, -4.8302, -1.38565, -7.89736)
 
 [node name="BoxSpawner" parent="Building" instance=ExtResource("4_3rill")]
-transform = Transform3D(1, 2.30012e-09, -9.31322e-10, -2.30012e-09, 1, 8.84756e-09, 9.31322e-10, -8.84756e-09, 1, -4.86254, 1.46022, 14.2723)
+transform = Transform3D(1, 2.30012e-09, -9.31322e-10, -2.30012e-09, 1, 8.84756e-09, 9.31322e-10, -8.84756e-09, 1, -4.86254, 3.53851, 14.2723)
 
 [node name="LegsStandBC3" parent="Building" instance=ExtResource("5_cf3kl")]
 transform = Transform3D(-4.37114e-08, 0, 1.06796, 0, 2.56103, 0, -1, 0, -4.66822e-08, -4.67671, -2.0159, 14.941)
