@@ -19,9 +19,8 @@ public partial class BoxSpawner : Node3D
 	private float scan_interval = 0;
 	private bool opc_da_connected;
 	public float Speed { get; set; }
-	int updateRate = 2000;
+	float updateRate = 1;
 	bool canGenerateBox = false;
-	public int UpdateRate { get => updateRate; set => updateRate = value; }
 
 	Root Main;
 

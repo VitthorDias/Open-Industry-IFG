@@ -160,7 +160,7 @@ public partial class CommsConfig : Control
 			{
 				Name = "OIIFG",
 				Active = true,  // Habilitar a leitura automática
-				UpdateRate = 1000,  // Tempo de atualização (1 segundo)
+				UpdateRate = 100,  // Tempo de atualização (100 ms)
 				Deadband = 0,  // Sem filtro de variação mínima
 			};
 

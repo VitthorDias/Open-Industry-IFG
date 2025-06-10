@@ -9,9 +9,7 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 	private bool enableComms;
 	private bool opc_da_connected;
 
-	[Export]
-	int updateRate = 100;
-	public int UpdateRate { get => updateRate; set => updateRate = value; }
+	float updateRate = 1;
 
 	Color beltColor = new Color(1, 1, 1, 1);
 	[Export]
@@ -80,16 +78,6 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 
 	public Root Main { get; set; }
 
-	public override void _ValidateProperty(Godot.Collections.Dictionary property)
-	{
-		GD.Print("\n> [BeltConveyor.cs] [_ValidateProperty()]");
-		string propertyName = property["name"].AsStringName();
-
-		if (propertyName == PropertyName.updateRate)
-		{
-			property["usage"] = (int)(isCommsConnected ? PropertyUsageFlags.Default : PropertyUsageFlags.NoEditor);
-		}
-	}
 	public override void _Ready()
 	{
 		GD.Print("\n> [BeltConveyor.cs] [_Ready()]");
@@ -164,7 +152,7 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 			)
 			{
 				scan_interval += delta;
-				if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+				if (scan_interval > updateRate && readSuccessful)
 				{
 					scan_interval = 0;
 					Task.Run(ScanTag);
