@@ -6,13 +6,12 @@ public partial class BladeStop : Node3D
 {
 	private bool isCommsConnected;
 
-	[Export]
-	private int updateRate = 300;
+	float updateRate = 1;
 	double scan_interval = 0;
 	bool readSuccessful = false;
 
 	bool active = false;
-	
+
 	float activePos = 0.24f;
 
 	float airPressureHeight = 0.0f;
@@ -103,7 +102,7 @@ public partial class BladeStop : Node3D
 			)
 			{
 				scan_interval += delta;
-				if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+				if (scan_interval > updateRate && readSuccessful)
 				{
 					scan_interval = 0;
 					Task.Run(ScanTag);
@@ -138,7 +137,7 @@ public partial class BladeStop : Node3D
 	{
 		if (Main == null) return;
 
-		tagBladeStop = SceneComponents.GetComponentByKey(Name, Main.currentScene).Tag;
+		SetObjectTag();
 
 		var globalVariables = GetNodeOrNull("/root/GlobalVariables");
 		isCommsConnected = (bool)globalVariables.Get("opc_da_connected");
@@ -167,5 +166,10 @@ public partial class BladeStop : Node3D
 			GD.PrintErr("Failure to read: " + tagBladeStop + " in Node: " + Name);
 			readSuccessful = false;
 		}
+	}
+
+	void SetObjectTag()
+	{
+		tagBladeStop = SceneComponents.GetComponentByKey(Name, Main.currentScene).Tag;
 	}
 }

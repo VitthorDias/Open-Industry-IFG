@@ -18,7 +18,7 @@ public partial class StackSegment : Node3D
 			NotifyPropertyListChanged();
 		}
 	}
-	public int updateRate = 100;
+	float updateRate = 1;
 
 	bool readSuccessful = false;
 	bool running = false;
@@ -100,7 +100,7 @@ public partial class StackSegment : Node3D
 		if (enableComms && running && readSuccessful)
 		{
 			scan_interval += delta;
-			if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+			if (scan_interval > updateRate && readSuccessful)
 			{
 				scan_interval = 0;
 				Task.Run(ScanTag);

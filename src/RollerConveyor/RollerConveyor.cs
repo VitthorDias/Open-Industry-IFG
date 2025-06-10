@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
-public partial class RollerConveyor : Node3D, IRollerConveyor
+public partial class RollerConveyor : Node3D
 {
 	private bool enableComms;
 
@@ -19,9 +19,8 @@ public partial class RollerConveyor : Node3D, IRollerConveyor
 	[Export]
 	private string tag;
 	public string Tag { get => tag; set => tag = value; }
-	[Export]
-	private int updateRate = 300;
-	public int UpdateRate { get => updateRate; set => updateRate = value; }
+	float updateRate = 1;
+
 	[Export]
 	public float Speed { get; set; } = 1.0f;
 
@@ -71,15 +70,6 @@ public partial class RollerConveyor : Node3D, IRollerConveyor
 		}
 	}
 
-	public override void _ValidateProperty(Godot.Collections.Dictionary property)
-	{
-		string propertyName = property["name"].AsStringName();
-
-		if (propertyName == PropertyName.updateRate || propertyName == PropertyName.tag)
-		{
-			property["usage"] = (int)(EnableComms ? PropertyUsageFlags.Default : PropertyUsageFlags.NoEditor);
-		}
-	}
 	public override void _Ready()
 	{
 		meshInstance = GetNode<MeshInstance3D>("ConvRoller");
@@ -134,7 +124,7 @@ public partial class RollerConveyor : Node3D, IRollerConveyor
 			if (enableComms && running && readSuccessful)
 			{
 				scan_interval += delta;
-				if (scan_interval > (float)updateRate / 1000 && readSuccessful)
+				if (scan_interval > updateRate && readSuccessful)
 				{
 					scan_interval = 0;
 					Task.Run(ScanTag);
