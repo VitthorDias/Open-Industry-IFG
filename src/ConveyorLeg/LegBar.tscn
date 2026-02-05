@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=4 uid="uid://di0tdk31gf2cj"]
 
 [ext_resource type="Shader" uid="uid://b6uso6bqiurpv" path="res://assets/3DModels/Shaders/MetalShaderLegsBar.tres" id="1_dcps5"]
-[ext_resource type="Script" path="res://src/ConveyorLeg/LegBar.cs" id="2_a7014"]
+[ext_resource type="Script" uid="uid://6n3apsqjgjs0" path="res://src/ConveyorLeg/LegBar.cs" id="2_a7014"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sk8wd"]
 render_priority = 0

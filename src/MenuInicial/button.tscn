@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv0ds2y3s7vgu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wlqed"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlqed"]
+bg_color = Color(0, 0, 0, 0.552941)
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gj8gd"]
+bg_color = Color(0.235294, 0.235294, 0.235294, 0.905882)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwixx"]
+bg_color = Color(0.235294, 0.235294, 0.235294, 1)
+
+[node name="Button" type="Button"]
+offset_right = 79.0
+offset_bottom = 31.0
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wlqed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wlqed")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gj8gd")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hwixx")
+text = "EXEMPLE"

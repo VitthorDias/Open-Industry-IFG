@@ -4,11 +4,11 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l3eno"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k7woa"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i8gla"]
 transparency = 1
 
 [sub_resource type="BoxMesh" id="BoxMesh_u7rni"]
-material = SubResource("StandardMaterial3D_k7woa")
+material = SubResource("StandardMaterial3D_i8gla")
 
 [node name="Despawner" type="Node3D"]
 transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)

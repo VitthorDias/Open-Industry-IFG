@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bg1alnxlb2kud"]
+[gd_scene load_steps=13 format=3 uid="uid://bg1alnxlb2kud"]
 
 [ext_resource type="Script" path="res://src/Main/Root.cs" id="1_tn3cc"]
 [ext_resource type="PackedScene" uid="uid://dyhvoundu2kqc" path="res://parts/Building.tscn" id="2_dmgqa"]
@@ -12,10 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://bc71peokxkxdb" path="res://src/MenuInterface/SimulationControl.tscn" id="9_uxyvy"]
 [ext_resource type="PackedScene" uid="uid://gddgyvex6gdj" path="res://parts/PushButton.tscn" id="12_1hgjq"]
 [ext_resource type="PackedScene" uid="uid://kdpe7o4ec1fa" path="res://parts/DiffuseSensor.tscn" id="12_bb330"]
-[ext_resource type="Texture2D" uid="uid://dwtde6suhu7db" path="res://src/CommsConfig/settings.png" id="13_e1wof"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kip1s"]
-bg_color = Color(0.235294, 0.235294, 0.235294, 1)
 
 [node name="Scene_1" type="Node3D"]
 transform = Transform3D(0.999999, 0.000938629, -0.000569311, -0.000938516, 1, 0.000206591, 0.000569496, -0.00020608, 1, 0, 0, 0)
@@ -85,30 +81,6 @@ transform = Transform3D(-0.00532013, -0.00166708, 0.20907, 0.000641704, 2.5722, 
 
 [node name="CommsConfigMenu" parent="." instance=ExtResource("8_0oyxn")]
 
-[node name="RunBar" parent="." instance=ExtResource("9_uxyvy")]
-offset_left = -110.0
-offset_right = 110.0
+[node name="Simulation_Control" parent="." instance=ExtResource("9_uxyvy")]
 
-[node name="TextoCommsState" type="RichTextLabel" parent="."]
-offset_right = 276.0
-offset_bottom = 28.0
-size_flags_horizontal = 8
-theme_override_font_sizes/normal_font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_kip1s")
-text = "Status Comunicação OPC DA"
-fit_content = true
-autowrap_mode = 0
-
-[node name="bt_show_comms_config_menu" type="Button" parent="."]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -146.0
-offset_bottom = 36.0
-grow_horizontal = 0
-theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 20
-text = "Configurações"
-icon = ExtResource("13_e1wof")
-
-[connection signal="pressed" from="bt_show_comms_config_menu" to="." method="_on_bt_show_comms_config_menu_pressed"]
+[editable path="Simulation_Control"]

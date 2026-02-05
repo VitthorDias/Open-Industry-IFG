@@ -12,7 +12,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bbl2p"]
 
-[node name="CommsConfig" type="Control"]
+[node name="CommsConfigMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,12 +28,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.454902, 0.454902, 0.454902, 0.921569)
+color = Color(0, 0, 0, 0.866667)
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -141.0
+offset_right = 141.0
+offset_bottom = 36.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 26
+text = "Configurações OPC DA"
+fit_content = true
+autowrap_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -53,15 +69,6 @@ layout_mode = 2
 [node name="VBoxContainer1" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 26
-text = "Configurações OPC DA"
-fit_content = true
-autowrap_mode = 0
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer1"]
 layout_mode = 2
@@ -122,11 +129,6 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_aob83")
 [node name="VBoxContainerMap" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="VSeparator3" type="VSeparator" parent="MarginContainer/HBoxContainer/VBoxContainerMap"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxEmpty_bbl2p")
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainerMap"]
 layout_mode = 2
@@ -192,6 +194,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 alignment = 1
+
+[node name="MenuConfig" type="MenuButton" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_bottom = 31.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+text = "MENU"
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer1/btn_opc" to="." method="_on_btn_opc_pressed"]
 [connection signal="item_selected" from="MarginContainer/HBoxContainer/VBoxContainer1/ServerList" to="." method="_on_server_selected"]

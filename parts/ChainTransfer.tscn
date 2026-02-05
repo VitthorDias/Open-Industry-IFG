@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cqufgm7ocho1i"]
 
-[ext_resource type="Script" path="res://src/ChainTransfer/ChainTransfer.cs" id="1_u5lod"]
+[ext_resource type="Script" uid="uid://c4m0eys65vgkp" path="res://src/ChainTransfer/ChainTransfer.cs" id="1_u5lod"]
 [ext_resource type="PackedScene" uid="uid://ctc4i4ft2nrh2" path="res://src/ChainTransfer/Base.tscn" id="2_ftoaw"]
 
 [node name="ChainTransfer" type="Node3D"]

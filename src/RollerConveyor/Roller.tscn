@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://d4bf4if1fpy0t"]
 
-[ext_resource type="Script" path="res://src/RollerConveyor/Roller.cs" id="1_ay1m5"]
+[ext_resource type="Script" uid="uid://dsek18pp6fql2" path="res://src/RollerConveyor/Roller.cs" id="1_ay1m5"]
 [ext_resource type="ArrayMesh" uid="uid://tqapy4tuykn1" path="res://assets/3DModels/Meshes/ConveyorRollerRoller_Cylinder_001.res" id="1_wf4wt"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uhn3w"]

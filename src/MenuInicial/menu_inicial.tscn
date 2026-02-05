@@ -1,20 +1,14 @@
 [gd_scene load_steps=10 format=3 uid="uid://cn4xpwuewvd7r"]
 
 [ext_resource type="Script" path="res://src/MenuInicial/menu_inicial.gd" id="1_66ttl"]
-[ext_resource type="Theme" uid="uid://ckhurxhqnuuna" path="res://src/MenuInicial/menu_button.tres" id="2_gmpvg"]
-[ext_resource type="Texture2D" uid="uid://bek8hs1tiv8g4" path="res://src/MenuInicial/menu_logoIFG_600.jpg" id="3_fk7uo"]
-[ext_resource type="Texture2D" uid="uid://cwhio2p2hmb12" path="res://src/MenuInicial/oi-ifg-cena-1-imagem.png" id="4_0lpjs"]
-[ext_resource type="Texture2D" uid="uid://blhperhkon11s" path="res://src/MenuInicial/oi-ifg-cena-2-imagem.png" id="5_ym5rw"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x8t7r"]
-
-[sub_resource type="Theme" id="Theme_jk3vg"]
-RichTextLabel/colors/default_color = Color(0, 0, 0, 1)
-RichTextLabel/font_sizes/normal_font_size = 70
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ivqi1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_msmej"]
+[ext_resource type="PackedScene" uid="uid://bv0ds2y3s7vgu" path="res://src/MenuInicial/button.tscn" id="2_ivmne"]
+[ext_resource type="Texture2D" uid="uid://dy5fdgs6wkp3e" path="res://src/MenuInicial/imagens/menu_fundo.png" id="2_novke"]
+[ext_resource type="Texture2D" uid="uid://b4uf0busjdix" path="res://src/MenuInicial/imagens/logotipo_3.png" id="3_novke"]
+[ext_resource type="PackedScene" uid="uid://dicqfr4muqy1y" path="res://src/MenuInicial/menu_sobre.tscn" id="5_novke"]
+[ext_resource type="PackedScene" uid="uid://byjv3awd8hlvl" path="res://src/MenuInicial/menu_cenas.tscn" id="6_skopw"]
+[ext_resource type="Texture2D" uid="uid://bdpbus1srt5tu" path="res://src/MenuInicial/imagens/cena_4.png" id="7_qvmvf"]
+[ext_resource type="Texture2D" uid="uid://d4a1hpx741dnc" path="res://src/MenuInicial/imagens/cena_5.png" id="7_rl11y"]
+[ext_resource type="Texture2D" uid="uid://crntojranhjg1" path="res://src/MenuInicial/imagens/cena_6.png" id="9_ybfyt"]
 
 [node name="MenuInicial" type="Control"]
 layout_mode = 3
@@ -32,120 +26,118 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+color = Color(0, 0, 0, 1)
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.105882)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -77.0
+offset_top = -18.0
+offset_right = 77.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_novke")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-columns = 4
+theme_override_constants/separation = 0
 
-[node name="VSeparator2" type="VSeparator" parent="GridContainer"]
-custom_minimum_size = Vector2(100, 0)
+[node name="PainelBotoes" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(262, 0)
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 3
-theme_override_styles/separator = SubResource("StyleBoxEmpty_x8t7r")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GridContainer"]
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/PainelBotoes"]
 layout_mode = 2
 size_flags_vertical = 3
+color = Color(0.235294, 0.235294, 0.235294, 1)
 
-[node name="LogoIFG" type="TextureRect" parent="GridContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PainelBotoes/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+size_flags_vertical = 0
+color = Color(0.333333, 0.333333, 0.333333, 1)
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/PanelContainer/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_novke")
+expand_mode = 1
+
+[node name="Botões" type="VBoxContainer" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="Cenas" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/Botões" instance=ExtResource("2_ivmne")]
+layout_mode = 2
+text = "CENAS"
+
+[node name="Sobre" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/Botões" instance=ExtResource("2_ivmne")]
+layout_mode = 2
+text = "SOBRE"
+
+[node name="Sair" parent="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/Botões" instance=ExtResource("2_ivmne")]
+layout_mode = 2
+size_flags_vertical = 10
+text = "SAIR"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource("3_fk7uo")
-expand_mode = 3
-stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GridContainer/VBoxContainer"]
+[node name="menu_sobre" parent="HBoxContainer/PanelContainer" instance=ExtResource("5_novke")]
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="GridContainer/VBoxContainer/VBoxContainer"]
+[node name="menu_cenas" parent="HBoxContainer/PanelContainer" instance=ExtResource("6_skopw")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme = SubResource("Theme_jk3vg")
-text = "Open Industry"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="GridContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme = SubResource("Theme_jk3vg")
-text = "IFG"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
+[node name="TextureRect" parent="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena4/ColorRect" index="0"]
+texture = ExtResource("7_qvmvf")
 
-[node name="Cenario1_btn" type="Button" parent="GridContainer/VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_gmpvg")
-text = "Cena 1 - Esteiras"
+[node name="ColorRect" parent="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena5" index="0"]
+visible = true
 
-[node name="Cenario2_btn" type="Button" parent="GridContainer/VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme = ExtResource("2_gmpvg")
-text = "Cena 2 - Sequência Esteiras"
+[node name="TextureRect" parent="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena5/ColorRect" index="0"]
+texture = ExtResource("7_rl11y")
 
-[node name="Cenario3_btn" type="Button" parent="GridContainer/VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme = ExtResource("2_gmpvg")
-text = "Cena 3 - Separador"
+[node name="ColorRect" parent="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer2/ContainerCena6" index="0"]
+visible = true
 
-[node name="VSeparator" type="VSeparator" parent="GridContainer"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-size_flags_horizontal = 0
+[node name="TextureRect" parent="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer2/ContainerCena6/ColorRect" index="0"]
+texture = ExtResource("9_ybfyt")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[connection signal="pressed" from="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/Botões/Cenas" to="." method="_on_cenas_pressed"]
+[connection signal="pressed" from="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/Botões/Sobre" to="." method="_on_sobre_pressed"]
+[connection signal="pressed" from="HBoxContainer/PainelBotoes/ColorRect/VBoxContainer/Botões/Sair" to="." method="_on_sair_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena1/ColorRect/Cena1" to="." method="_on_cena_1_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena2/ColorRect/Cena2" to="." method="_on_cena_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena3/ColorRect/Cena3" to="." method="_on_cena_3_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena4/ColorRect/Cena4" to="." method="_on_cena_4_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer/ContainerCena5/ColorRect/Cena5" to="." method="_on_cena_5_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/menu_cenas/HBoxContainer2/ContainerCena6/ColorRect/Cena6" to="." method="_on_cena_6_pressed"]
 
-[node name="HSeparator" type="HSeparator" parent="GridContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxEmpty_ivqi1")
-
-[node name="ImagemCena1" type="TextureRect" parent="GridContainer/VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource("4_0lpjs")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="ImagemCena2" type="TextureRect" parent="GridContainer/VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource("5_ym5rw")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="HSeparator2" type="HSeparator" parent="GridContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxEmpty_msmej")
-
-[connection signal="pressed" from="GridContainer/VBoxContainer/VBoxContainer/Cenario1_btn" to="." method="_on_cenario_1_btn_pressed"]
-[connection signal="pressed" from="GridContainer/VBoxContainer/VBoxContainer/Cenario2_btn" to="." method="_on_cenario_2_btn_pressed"]
-[connection signal="pressed" from="GridContainer/VBoxContainer/VBoxContainer/Cenario3_btn" to="." method="_on_cenario_3_btn_pressed"]
+[editable path="HBoxContainer/PanelContainer/menu_cenas"]

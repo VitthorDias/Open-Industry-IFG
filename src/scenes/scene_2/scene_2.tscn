@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ba0efwi0ug8l8"]
+[gd_scene load_steps=18 format=3 uid="uid://ba0efwi0ug8l8"]
 
 [ext_resource type="PackedScene" uid="uid://dyhvoundu2kqc" path="res://parts/Building.tscn" id="1_dewph"]
 [ext_resource type="Script" path="res://src/Main/Root.cs" id="1_jm3vw"]
@@ -17,10 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://bl73u0rvt2orv" path="res://parts/Despawner.tscn" id="15_61p5f"]
 [ext_resource type="PackedScene" uid="uid://bcds53nhapmuf" path="res://src/CommsConfig/comms_config.tscn" id="16_frjb8"]
 [ext_resource type="PackedScene" uid="uid://bc71peokxkxdb" path="res://src/MenuInterface/SimulationControl.tscn" id="17_rixpw"]
-[ext_resource type="Texture2D" uid="uid://dwtde6suhu7db" path="res://src/CommsConfig/settings.png" id="18_087vx"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iy1t"]
-bg_color = Color(0.235294, 0.235294, 0.235294, 1)
 
 [node name="Scene_2" type="Node3D"]
 script = ExtResource("1_jm3vw")
@@ -195,30 +191,6 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5.884
 
 [node name="CommsConfigMenu" parent="." instance=ExtResource("16_frjb8")]
 
-[node name="RunBar" parent="." instance=ExtResource("17_rixpw")]
-offset_left = -110.0
-offset_right = 110.0
+[node name="Simulation_Control" parent="." instance=ExtResource("17_rixpw")]
 
-[node name="TextoCommsState" type="RichTextLabel" parent="."]
-offset_right = 276.0
-offset_bottom = 28.0
-size_flags_horizontal = 8
-theme_override_font_sizes/normal_font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_7iy1t")
-text = "Status Comunicação OPC DA"
-fit_content = true
-autowrap_mode = 0
-
-[node name="bt_show_comms_config_menu" type="Button" parent="."]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -146.0
-offset_bottom = 36.0
-grow_horizontal = 0
-theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 20
-text = "Configurações"
-icon = ExtResource("18_087vx")
-
-[connection signal="pressed" from="bt_show_comms_config_menu" to="." method="_on_bt_show_comms_config_menu_pressed"]
+[editable path="Simulation_Control"]

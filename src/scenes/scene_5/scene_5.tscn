@@ -1,0 +1,459 @@
+[gd_scene load_steps=22 format=3 uid="uid://due1acvpdhyov"]
+
+[ext_resource type="Script" path="res://src/Main/Root.cs" id="1_oghi8"]
+[ext_resource type="PackedScene" uid="uid://dyhvoundu2kqc" path="res://parts/Building.tscn" id="2_cm2u0"]
+[ext_resource type="PackedScene" uid="uid://ccnjj66g0dynu" path="res://parts/Pallet.tscn" id="3_l23bs"]
+[ext_resource type="PackedScene" uid="uid://bq16fe5njnr2i" path="res://parts/Box.tscn" id="4_2vr7a"]
+[ext_resource type="PackedScene" uid="uid://co2mqmdwpn57w" path="res://parts/BoxSpawner.tscn" id="5_uwiqg"]
+[ext_resource type="PackedScene" uid="uid://kdpe7o4ec1fa" path="res://parts/DiffuseSensor.tscn" id="7_58s27"]
+[ext_resource type="PackedScene" uid="uid://dm55h6ap605bw" path="res://parts/BeltConveyor.tscn" id="8_owlha"]
+[ext_resource type="PackedScene" uid="uid://dvjrx5crpqs5f" path="res://parts/SideGuard.tscn" id="9_7a2gt"]
+[ext_resource type="PackedScene" uid="uid://cr8u3bta0skiy" path="res://parts/ConveyorLegBC.tscn" id="10_j62t4"]
+[ext_resource type="PackedScene" uid="uid://6vu4cx2v1ltg" path="res://parts/CurvedBeltConveyor.tscn" id="11_1btrv"]
+[ext_resource type="PackedScene" uid="uid://b567tts2001h8" path="res://parts/SideGuardCBC.tscn" id="12_s7wyb"]
+[ext_resource type="PackedScene" uid="uid://somtwmiih8bb" path="res://parts/ConveyorLegCRC.tscn" id="13_fq8dg"]
+[ext_resource type="PackedScene" uid="uid://c3cdcxifx4eej" path="res://parts/CurvedRollerConveyor.tscn" id="14_3t2xa"]
+[ext_resource type="PackedScene" uid="uid://rv5ef61beh35" path="res://parts/ConveyorLegRC.tscn" id="15_687aa"]
+[ext_resource type="PackedScene" uid="uid://dg47c07xr4ksu" path="res://parts/RollerConveyor.tscn" id="16_iic38"]
+[ext_resource type="PackedScene" uid="uid://5pjmdoyiub35" path="res://parts/Diverter.tscn" id="17_jj3pd"]
+[ext_resource type="PackedScene" uid="uid://bl73u0rvt2orv" path="res://parts/Despawner.tscn" id="18_bs8tv"]
+[ext_resource type="PackedScene" uid="uid://gddgyvex6gdj" path="res://parts/PushButton.tscn" id="19_4uxhm"]
+[ext_resource type="PackedScene" uid="uid://c3ave167868rd" path="res://src/Player/player.tscn" id="20_oah13"]
+[ext_resource type="PackedScene" uid="uid://bc71peokxkxdb" path="res://src/MenuInterface/SimulationControl.tscn" id="21_sb6pm"]
+[ext_resource type="PackedScene" uid="uid://bcds53nhapmuf" path="res://src/CommsConfig/comms_config.tscn" id="22_blsj2"]
+
+[node name="Scene_5" type="Node3D"]
+script = ExtResource("1_oghi8")
+CurrentScene = 5
+
+[node name="Building" parent="." instance=ExtResource("2_cm2u0")]
+
+[node name="Pallet-1" parent="Building" instance=ExtResource("3_l23bs")]
+transform = Transform3D(-0.000244304, 0, -1, 0, 1, 0, 1, 0, -0.000244304, -8.3855, -2, 3.04336)
+
+[node name="Box-1" parent="Building/Pallet-1" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(-0.00767943, 0, -0.99997, 0, 1, 0, 0.99997, 0, -0.00767943, -7.7928, -1.26326, 3.74379)
+
+[node name="Box-2" parent="Building/Pallet-1" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(-0.00767943, 0, -0.99997, 0, 1, 0, 0.99997, 0, -0.00767943, -8.89916, -1.26326, 3.7353)
+
+[node name="Box-3" parent="Building/Pallet-1" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(-0.00767943, 0, -0.99997, 0, 1, 0, 0.99997, 0, -0.00767943, -8.88874, -1.26326, 2.37844)
+
+[node name="Box-4" parent="Building/Pallet-1" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(-0.00767943, 0, -0.99997, 0, 1, 0, 0.99997, 0, -0.00767943, -7.79352, -1.26326, 2.38685)
+
+[node name="Box-5" parent="Building/Pallet-1" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(0.99997, 0, -0.00767939, 0, 1, 0, 0.00767939, 0, 0.99997, -7.78761, -0.255531, 3.06772)
+
+[node name="Box-6" parent="Building/Pallet-1" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(0.99997, 0, -0.00767939, 0, 1, 0, 0.00767939, 0, 0.99997, -8.89397, -0.255531, 3.05922)
+
+[node name="BoxSpawner-1" parent="Building" instance=ExtResource("5_uwiqg")]
+transform = Transform3D(1, 2.30012e-09, -9.31322e-10, -2.30012e-09, 1, 8.84756e-09, 9.31322e-10, -8.84756e-09, 1, -8.42921, 0.842684, 5.58584)
+spawnInterval = 5.0
+
+[node name="DiffuseSensor-1" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9.94965, 0.545, 5.57909)
+distance = 2.5
+
+[node name="Conveyor-1" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(-1.74846e-07, 0, -1, 0, 1, 0, 4, 0, -4.37114e-08, -8.45092, 0, 6.57962)
+Speed = 5.0
+
+[node name="Node3D" type="Node3D" parent="Building/Conveyor-1"]
+
+[node name="SideGuard" parent="Building/Conveyor-1/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.648245, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="SideGuard2" parent="Building/Conveyor-1/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-0.579124, 0, -8.74228e-08, 0, 1, 0, 5.06286e-08, 0, -1, 0, 0, 0)
+
+[node name="LS-Conveyor-1" type="Node3D" parent="Building"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -8.29699, 0, 6.46124)
+
+[node name="LegsStandBC1-1" parent="Building/LS-Conveyor-1" instance=ExtResource("10_j62t4")]
+transform = Transform3D(1, 0, 0, 0, 1.6033, 0, 0, 0, 1.02527, 1.91498, -2, 0.15826)
+
+[node name="LegsStandBC1-2" parent="Building/LS-Conveyor-1" instance=ExtResource("10_j62t4")]
+transform = Transform3D(1, 0, 0, 0, 1.6033, 0, 0, 0, 1.02527, 0.249854, -2, 0.162649)
+
+[node name="LegsStandBC1-3" parent="Building/LS-Conveyor-1" instance=ExtResource("10_j62t4")]
+transform = Transform3D(1, 0, 0, 0, 1.6033, 0, 0, 0, 1.02527, -1.53369, -2, 0.167349)
+
+[node name="DiffuseSensor-2" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9.98471, 0.545, 8.27357)
+distance = 2.5
+
+[node name="Conveyor-2" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(-1.74846e-07, 0, -1, 0, 1, 0, 4, 0, -4.37114e-08, -8.453, 0, 11.0856)
+Speed = 0.0
+
+[node name="Node3D" type="Node3D" parent="Building/Conveyor-2"]
+
+[node name="SideGuard" parent="Building/Conveyor-2/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.729273, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="SideGuard2" parent="Building/Conveyor-2/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.108694, 0, 9.53674e-07)
+
+[node name="LS-Conveyor-2" type="Node3D" parent="Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.48634, 0, 11.1027)
+
+[node name="LegsStandBC3-1" parent="Building/LS-Conveyor-2" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0330715, -2, -1.75683)
+
+[node name="LegsStandBC3-2" parent="Building/LS-Conveyor-2" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0330715, -2, -0.0917001)
+
+[node name="LegsStandBC3-3" parent="Building/LS-Conveyor-2" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0330715, -2, 1.69185)
+
+[node name="DiffuseSensor-3" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9.98471, 0.545, 12.8775)
+distance = 2.5
+
+[node name="CurvedBeltConveyor-1" parent="Building" instance=ExtResource("11_1btrv")]
+transform = Transform3D(1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, 1, -6.96785, 0, 13.602)
+
+[node name="SideGuardCBC" parent="Building/CurvedBeltConveyor-1" instance=ExtResource("12_s7wyb")]
+
+[node name="LG-CConveyor-1" type="Node3D" parent="Building"]
+transform = Transform3D(1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, 1, -6.9305, 0, 13.6037)
+
+[node name="LegsStandCRC1" parent="Building/LG-CConveyor-1" instance=ExtResource("13_fq8dg")]
+transform = Transform3D(-0.00515627, 0, -1.03737, 0, 1.51983, 0, 0.887184, 0, -0.00602913, -1.471, -2, 0.00599957)
+
+[node name="LegsStandCRC2" parent="Building/LG-CConveyor-1" instance=ExtResource("13_fq8dg")]
+transform = Transform3D(0.965336, 0, -0.0213576, 0, 1.53185, 0, 0.0182656, 0, 1.12875, 0.0420003, -2, 1.475)
+
+[node name="Conveyor-3" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 1, -4.48147, 0, 15.1298)
+Speed = 0.0
+
+[node name="Node3D" type="Node3D" parent="Building/Conveyor-3"]
+
+[node name="SideGuard" parent="Building/Conveyor-3/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.729273, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="SideGuard2" parent="Building/Conveyor-3/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.108694, 0, 9.53674e-07)
+
+[node name="LS-Conveyor-3" type="Node3D" parent="Building"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.48388, 0, 15.1672)
+
+[node name="LegsStandBC4-1" parent="Building/LS-Conveyor-3" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0330715, -2, -1.75683)
+
+[node name="LegsStandBC4-2" parent="Building/LS-Conveyor-3" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0330715, -2, -0.0917001)
+
+[node name="LegsStandBC4-3" parent="Building/LS-Conveyor-3" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0330715, -2, 1.69185)
+
+[node name="DiffuseSensor-4" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.60761, 0.545, 16.6613)
+distance = 2.5
+
+[node name="CurvedRollerConveyor-1" parent="Building" instance=ExtResource("14_3t2xa")]
+transform = Transform3D(-0.000467552, -0.0267835, 0.999641, 0.0174461, 0.999488, 0.0267876, -0.999848, 0.0174524, -4.37114e-08, -1.89116, 0.0445325, 13.6013)
+
+[node name="LegsStandRC1" parent="Building/CurvedRollerConveyor-1" instance=ExtResource("15_687aa")]
+transform = Transform3D(0.0011763, 0, -1.06826, -2.54659e-10, 1.65638, 1.86265e-09, 0.687742, 6.19027e-09, 0.00182712, -1.47872, -2, -0.030658)
+GrabsRotation = 3.0
+
+[node name="LegsStandRC2" parent="Building/CurvedRollerConveyor-1" instance=ExtResource("15_687aa")]
+transform = Transform3D(0.68689, -3.91155e-08, 0.00923349, 3.72529e-09, 1.60734, -6.00994e-09, -0.00592238, 6.21069e-08, 1.07091, 0.0212412, -1.99927, 1.49986)
+GrabsRotation = 0.4
+
+[node name="SideGuardCBC" parent="Building/CurvedRollerConveyor-1" instance=ExtResource("12_s7wyb")]
+
+[node name="RollerConveyor-1" parent="Building" instance=ExtResource("16_iic38")]
+transform = Transform3D(0.0174524, 0, 1.03162, 0, 0.921, 0, -0.999847, 0, 0.018007, -0.398587, 0.0295283, 12.5915)
+SkewAngle = 20.0
+
+[node name="SideGuard" parent="Building/RollerConveyor-1" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.975329, 0, -0.0292644, 0, 1, 0, 0.0287256, 0, 0.993623, 0.00427437, 0, 0.237454)
+
+[node name="SideGuard2" parent="Building/RollerConveyor-1" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-1.03261, 0, -0.0858691, 0, 1, 0, 0.0889982, 0, -0.996306, -0.108333, 0, -0.101586)
+
+[node name="LegsStandRC-1" parent="Building/RollerConveyor-1" instance=ExtResource("15_687aa")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1.60116, 0, 0, 0, 1.06708, -0.435546, -2, -2.98023e-08)
+
+[node name="LegsStandRC-2" parent="Building/RollerConveyor-1" instance=ExtResource("15_687aa")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1.60116, 0, 0, 0, 1.06708, 0.427683, -2, 2.98023e-08)
+
+[node name="RollerConveyor-2" parent="Building" instance=ExtResource("16_iic38")]
+transform = Transform3D(0.0174524, 0, 1.03162, 0, 0.921, 0, -0.999847, 0, 0.018007, -0.345056, 0.0295283, 11.1001)
+SkewAngle = 15.0
+
+[node name="SideGuard" parent="Building/RollerConveyor-2" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.972625, 0, -0.0397221, 0, 1, 0, 0.0388946, 0, 0.993317, 0.00422955, 0, 0.234849)
+
+[node name="SideGuard2" parent="Building/RollerConveyor-2" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-1.03644, 0, -8.75443e-08, 0, 1, 0, 9.12696e-08, 0, -1, -0.00227356, 0, -0.126255)
+
+[node name="LegsStandRC-1" parent="Building/RollerConveyor-2" instance=ExtResource("15_687aa")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1.60116, 0, 0, 0, 1.06708, -0.435546, -2, -2.98023e-08)
+
+[node name="LegsStandRC-2" parent="Building/RollerConveyor-2" instance=ExtResource("15_687aa")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1.60116, 0, 0, 0, 1.06708, 0.427683, -2, 2.98023e-08)
+
+[node name="RollerConveyor-3" parent="Building" instance=ExtResource("16_iic38")]
+transform = Transform3D(-4.37114e-08, 0, 1.03178, 0, 0.921, 0, -1, 0, -4.51006e-08, -0.318541, 0.0295283, 9.58088)
+
+[node name="SideGuard" parent="Building/RollerConveyor-3" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(1.03644, 0, -7.10543e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0.173119)
+
+[node name="SideGuard2" parent="Building/RollerConveyor-3" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-1.03644, 0, -8.74228e-08, 0, 1, 0, 9.06084e-08, 0, -1, 0, 0, -0.142897)
+
+[node name="LegsStandRC-1" parent="Building/RollerConveyor-3" instance=ExtResource("15_687aa")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1.60116, 0, 0, 0, 1.06708, -0.435546, -2, -2.98023e-08)
+
+[node name="LegsStandRC-2" parent="Building/RollerConveyor-3" instance=ExtResource("15_687aa")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1.60116, 0, 0, 0, 1.06708, 0.427683, -2, 2.98023e-08)
+
+[node name="DiffuseSensor-5" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(0.000802811, 0, -1, 0, 1, 0, 1, 0, 0.000802811, 1.274, 0.594, 9.26108)
+distance = 2.5
+
+[node name="Conveyor-4" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(-1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, -0.355084, 0, 6.52734)
+Speed = 2.0
+
+[node name="SideGuard" parent="Building/Conveyor-4" instance=ExtResource("9_7a2gt")]
+
+[node name="LS-Conveyor-4" type="Node3D" parent="Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.467045, 0, 6.49329)
+
+[node name="LegsStandBC5-4" parent="Building/LS-Conveyor-4" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0941189, -2, -1.69805)
+
+[node name="LegsStandBC5-5" parent="Building/LS-Conveyor-4" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0941189, -2, -0.032917)
+
+[node name="LegsStandBC5-6" parent="Building/LS-Conveyor-4" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, 0.0941189, -2, 1.75063)
+
+[node name="DiffuseSensor-6" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 1.404, 0.594, 4.75)
+distance = 2.5
+
+[node name="Conveyor-5" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(-1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, -0.355084, 0, 2.01567)
+Speed = 2.0
+
+[node name="SideGuard" parent="Building/Conveyor-5" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0577775, 0, 0)
+RightEnd = false
+
+[node name="LS-Conveyor-5" type="Node3D" parent="Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.283456, 0, 1.95715)
+
+[node name="LegsStandBC6-7" parent="Building/LS-Conveyor-5" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, -0.0894696, -2, -1.67357)
+
+[node name="LegsStandBC6-8" parent="Building/LS-Conveyor-5" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, -0.0894696, -2, -0.00844669)
+
+[node name="LegsStandBC6-9" parent="Building/LS-Conveyor-5" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, -0.0894696, -2, 1.77511)
+
+[node name="DiffuseSensor-7" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 1.40439, 0.594401, 0.228348)
+distance = 2.5
+
+[node name="Conveyor-6" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(3.83359, 0.285437, -1.67233e-05, -1.14175, 0.958397, 4.98067e-06, 6.9797e-05, 0, 1, 2.81996, -0.617468, 6.46953)
+Speed = 0.0
+
+[node name="Node3D" type="Node3D" parent="Building/Conveyor-6"]
+
+[node name="SideGuard" parent="Building/Conveyor-6/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.652251, 7.45058e-09, 0, -4.1405e-17, 0.967762, 1.81899e-12, 2.18279e-11, 2.26238e-12, 1, 0, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="SideGuard2" parent="Building/Conveyor-6/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-0.655405, 4.47035e-08, -8.74215e-08, 5.96046e-08, 1.11311, -3.63797e-12, 5.72654e-08, 2.49522e-12, -1.00001, 0, 0, 0)
+
+[node name="LS-Conveyor-6" type="Node3D" parent="Building"]
+transform = Transform3D(1.74046e-05, 0, 1, 0, 1, 0, -1, 0, 1.74046e-05, 2.94419, 0, 6.50287)
+
+[node name="LegsStandBC8-1" parent="Building/LS-Conveyor-6" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.3714e-08, 0, 1.02527, 0, 1.52531, 0, -1, 0, -4.48144e-08, 0.0330715, -2, -1.75683)
+GrabsRotation = 16.6
+
+[node name="LegsStandBC8-2" parent="Building/LS-Conveyor-6" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37158e-08, 0, 1.02527, 0, 0.91846, 0, -1, 0, -4.48144e-08, 0.0330715, -2, -0.0917013)
+GrabsRotation = 16.6
+
+[node name="DiffuseSensor-11" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-0.998957, 0.0456593, -1.43781e-07, 0.0456593, 0.998957, -4.61161e-08, 1.41526e-07, -5.26329e-08, -1, 0.957495, 0.279194, 8.0788)
+distance = 2.5
+
+[node name="DiffuseSensor-12" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-0.937282, 0.348572, -1.50996e-07, 0.348572, 0.937282, 0, 1.41526e-07, -5.26329e-08, -1, 4.90656, -0.646186, 8.0788)
+distance = 2.5
+
+[node name="Conveyor-7" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(3.83359, 0.285437, -1.67233e-05, -1.14175, 0.958397, 4.98067e-06, 6.9797e-05, 0, 1, 2.81996, -0.617468, 1.89623)
+Speed = 0.0
+
+[node name="Node3D" type="Node3D" parent="Building/Conveyor-7"]
+
+[node name="SideGuard" parent="Building/Conveyor-7/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.652251, 7.45058e-09, 0, -4.1405e-17, 0.967762, 1.81899e-12, 2.18279e-11, 2.26238e-12, 1, 0, 0, 0)
+skeleton = NodePath("../..")
+
+[node name="SideGuard2" parent="Building/Conveyor-7/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-0.655405, 4.47035e-08, -8.74215e-08, 5.96046e-08, 1.11311, -3.63797e-12, 5.72654e-08, 2.49522e-12, -1.00001, 0, 0, 0)
+
+[node name="LS-Conveyor-7" type="Node3D" parent="Building"]
+transform = Transform3D(1.74046e-05, 0, 1, 0, 1, 0, -1, 0, 1.74046e-05, 2.94419, 0, 1.92957)
+
+[node name="LegsStandBC8-1" parent="Building/LS-Conveyor-7" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.3714e-08, 0, 1.02527, 0, 1.52531, 0, -1, 0, -4.48144e-08, 0.0330715, -2, -1.75683)
+GrabsRotation = 16.6
+
+[node name="LegsStandBC8-2" parent="Building/LS-Conveyor-7" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37158e-08, 0, 1.02527, 0, 0.91846, 0, -1, 0, -4.48144e-08, 0.0330715, -2, -0.0917013)
+GrabsRotation = 16.6
+
+[node name="DiffuseSensor-13" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-0.998957, 0.0456593, -1.43781e-07, 0.0456593, 0.998957, -4.61161e-08, 1.41526e-07, -5.26329e-08, -1, 0.960639, 0.242651, 3.4578)
+distance = 2.5
+
+[node name="DiffuseSensor-14" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-0.937282, 0.348572, -1.50996e-07, 0.348572, 0.937282, 0, 1.41526e-07, -5.26329e-08, -1, 4.90656, -0.646186, 3.4578)
+distance = 2.5
+
+[node name="Conveyor-8" parent="Building" instance=ExtResource("8_owlha")]
+transform = Transform3D(-1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, -0.355084, 0, -2.49907)
+Speed = 2.0
+
+[node name="Node3D" type="Node3D" parent="Building/Conveyor-8"]
+
+[node name="SideGuard" parent="Building/Conveyor-8/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(0.636098, 0, 0, 0, 1, 0, 0, 0, 1, 0.0577775, 0, 0)
+skeleton = NodePath("../..")
+RightEnd = false
+
+[node name="SideGuard2" parent="Building/Conveyor-8/Node3D" instance=ExtResource("9_7a2gt")]
+transform = Transform3D(-0.733034, 0, -8.74228e-08, 0, 1, 0, 6.40839e-08, 0, -1, 0, 0, 0)
+
+[node name="LS-Conveyor-8" type="Node3D" parent="Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.283456, 0, -2.55759)
+
+[node name="LegsStandBC7-7" parent="Building/LS-Conveyor-8" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, -0.0894696, -2, -1.67357)
+
+[node name="LegsStandBC7-8" parent="Building/LS-Conveyor-8" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, -0.0894696, -2, -0.00844669)
+
+[node name="LegsStandBC7-9" parent="Building/LS-Conveyor-8" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-4.37114e-08, 0, 1.02527, 0, 1.6033, 0, -1, 0, -4.48158e-08, -0.0894696, -2, 1.77511)
+
+[node name="DiffuseSensor-8" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 1.40439, 0.594401, -1.39785)
+distance = 2.5
+
+[node name="DiffuseSensor-9" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.82665, 0.545015, 7.38638)
+distance = 2.5
+
+[node name="Diverter-1" parent="Building" instance=ExtResource("17_jj3pd")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.48645, 0.43262, 6.49169)
+divertDistance = 2.0
+
+[node name="Pallet-2" parent="Building" instance=ExtResource("3_l23bs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.52247, -2, 6.51465)
+
+[node name="Box-7" parent="Building/Pallet-2" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.22634, -1.23058, 7.09335)
+
+[node name="Despawner-1" parent="Building" instance=ExtResource("18_bs8tv")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 6.45086, -1.66897, 6.50532)
+
+[node name="DiffuseSensor-10" parent="Building" instance=ExtResource("7_58s27")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.82735, 0.545015, 2.90677)
+distance = 2.5
+
+[node name="Diverter-2" parent="Building" instance=ExtResource("17_jj3pd")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.49905, 0.43262, 1.92198)
+divertDistance = 2.0
+
+[node name="Pallet-3" parent="Building" instance=ExtResource("3_l23bs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.522, -2, 1.88458)
+
+[node name="Box-8" parent="Building/Pallet-3" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.22634, -1.23058, 1.28143)
+
+[node name="Despawner-2" parent="Building" instance=ExtResource("18_bs8tv")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 6.45086, -1.66897, 1.88906)
+
+[node name="Despawner-3" parent="Building" instance=ExtResource("18_bs8tv")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -0.344309, 0.752345, -3.44275)
+
+[node name="PushButton-1" parent="Building" instance=ExtResource("19_4uxhm")]
+transform = Transform3D(-0.999983, 0, 0.005777, 0, 1, 0, -0.005777, 0, -0.999983, -12.8057, 0.513327, 3.05818)
+Text = "LIGAR"
+ButtonColor = Color(0.239216, 0.905882, 0.188235, 1)
+
+[node name="LegsStandPushButton-1" parent="Building" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-0.00331905, 0.00145059, -0.209682, 0.000641595, 2.18161, 0.000138073, 0.57459, -0.00242763, -0.00121136, -12.8052, -2.00366, 2.98709)
+
+[node name="PushButton-2" parent="Building" instance=ExtResource("19_4uxhm")]
+transform = Transform3D(-0.999983, 0, 0.005777, 0, 1, 0, -0.005777, 0, -0.999983, -13.7406, 0.513327, 3.05818)
+Text = "DESLIGAR"
+ButtonColor = Color(1, 0, 0, 1)
+
+[node name="LegsStandPushButton-2" parent="Building" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-0.00331905, 0.00145059, -0.209682, 0.000641595, 2.18161, 0.000138073, 0.57459, -0.00242763, -0.00121136, -13.7402, -2.00366, 2.98709)
+
+[node name="PushButton-3" parent="Building" instance=ExtResource("19_4uxhm")]
+transform = Transform3D(-0.999983, 0, 0.005777, 0, 1, 0, -0.005777, 0, -0.999983, -14.7025, 0.513327, 3.05818)
+Text = "RESETAR"
+ButtonColor = Color(1, 1, 0, 1)
+
+[node name="LegsStandPushButton-3" parent="Building" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-0.00331905, 0.00145059, -0.209682, 0.000641595, 2.18161, 0.000138073, 0.57459, -0.00242763, -0.00121136, -14.7021, -2.00366, 2.98709)
+
+[node name="Box" parent="Building" instance=ExtResource("4_2vr7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4162, 1.04338, 6.49964)
+visible = false
+
+[node name="PushButton-4" parent="Building" instance=ExtResource("19_4uxhm")]
+transform = Transform3D(1.74399e-05, 0, 1, 0, 1, 0, -1, 0, 1.74399e-05, 1.80136, 0.513327, 10.9922)
+Text = "LIN A"
+ButtonColor = Color(3.56168e-06, 0, 0.852083, 1)
+
+[node name="LegsStandPushButton-4" parent="Building" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-0.5746, 0.00243594, 3.66429e-06, 0.000641595, 2.18161, 0.000138073, -9.60752e-06, 0.00143658, -0.209686, 1.87245, -2.00366, 10.9922)
+
+[node name="PushButton-5" parent="Building" instance=ExtResource("19_4uxhm")]
+transform = Transform3D(1.74399e-05, 0, 1, 0, 1, 0, -1, 0, 1.74399e-05, 1.80136, 0.513327, 10.5533)
+Text = "LIN B"
+ButtonColor = Color(0, 0, 0.85098, 1)
+
+[node name="LegsStandPushButton-5" parent="Building" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-0.5746, 0.00243594, 3.66429e-06, 0.000641595, 2.18161, 0.000138073, -9.60752e-06, 0.00143658, -0.209686, 1.87245, -2.00366, 10.5533)
+
+[node name="PushButton-6" parent="Building" instance=ExtResource("19_4uxhm")]
+transform = Transform3D(1.74399e-05, 0, 1, 0, 1, 0, -1, 0, 1.74399e-05, 1.80136, 0.513327, 10.1107)
+Text = "LIN C"
+ButtonColor = Color(0, 0, 0.85098, 1)
+
+[node name="LegsStandPushButton-6" parent="Building" instance=ExtResource("10_j62t4")]
+transform = Transform3D(-0.5746, 0.00243594, 3.66429e-06, 0.000641595, 2.18161, 0.000138073, -9.60752e-06, 0.00143658, -0.209686, 1.87245, -2.00366, 10.1107)
+
+[node name="Player" parent="." instance=ExtResource("20_oah13")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -13.9302, 0.0526814, -0.828101)
+
+[node name="Simulation_Control" parent="." instance=ExtResource("21_sb6pm")]
+
+[node name="CommsConfigMenu" parent="." instance=ExtResource("22_blsj2")]

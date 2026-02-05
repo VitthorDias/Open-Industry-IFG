@@ -21,46 +21,49 @@ public partial class DiffuseSensor : Node3D
 		}
 	}
 	[Export]
-	Color collisionColor;
-	float updateRate = 1;
-	Color scanColor;
+	public Color collisionColor {get; set;} = new Color(1, 0, 0);
+
+	[Export]
+	public Color scanColor {get; set;} = new Color(0, 1, 0);
+	
+	[Export]
+	float scanRate {get; set;} = 0.05f; // Verifica colisão a cada 50ms
+
+	private bool debugBeam = true;
+	private bool running = false;	
 	private bool isCommsConnected;
-	string tagDiffuseSensor;
 
-	double scan_interval = 0;
-	bool readSuccessful = false;
-	bool running = false;
+	private CollisionObject3D clickableArea;
+	private float savedRotationY = 0f;
+	private float originalRotationY = 0f; // Rotação original da cena Godot
+	private int currentScene = 0;
 
-	bool blocked = false;
+	private bool blocked = false;
+	private bool lastSentState = false; // Ultimo estado enviado ao OPC
 
-	bool debugBeam = true;
+	private string tagDiffuseSensor = "";
 
+	private Marker3D rayMarker;
+	private MeshInstance3D rayMesh;
+	private CylinderMesh cylinderMesh;
+	private StandardMaterial3D rayMaterial;
 
-	Marker3D rayMarker;
-	MeshInstance3D rayMesh;
-	CylinderMesh cylinderMesh;
-	StandardMaterial3D rayMaterial;
+	private double scan_interval = 0;
 
-	Root Main;
+	private Root Main;
+
+	private System.Diagnostics.Stopwatch writeLatencyWatch = new System.Diagnostics.Stopwatch();
+    private bool measureNextRead = false;
+	
 	public override void _Ready()
 	{
-		GD.Print("\n> [DiffuseSensor.cs] [_Ready()]");
-		rayMarker = GetNode<Marker3D>("RayMarker");
-		rayMesh = GetNode<MeshInstance3D>("RayMarker/MeshInstance3D");
-		cylinderMesh = rayMesh.Mesh.Duplicate() as CylinderMesh;
-		rayMesh.Mesh = cylinderMesh;
-		rayMaterial = cylinderMesh.Material.Duplicate() as StandardMaterial3D;
-		cylinderMesh.Material = rayMaterial;
+		originalRotationY = RotationDegrees.Y;
 
-		Main = GetTree().CurrentScene as Root;
+		Inicializacao_Visuais();
+		Criar_Area_Clicavel();
+		Conectar_Root();
 
-		if (Main != null)
-		{
-			Main.SimulationStarted += OnSimulationStarted;
-			Main.SimulationEnded += OnSimulationEnded;
-		}
-
-		rayMarker.Visible = debugBeam;
+		LoadSavedRotation();
 	}
 
 	public override void _ExitTree()
@@ -71,87 +74,226 @@ public partial class DiffuseSensor : Node3D
 		Main.SimulationEnded -= OnSimulationEnded;
 	}
 
-	public override void _PhysicsProcess(double delta)
+	private void Inicializacao_Visuais()
 	{
-		// GD.Print("\n> [DiffuseSensor.cs] [_PhysicsProcess()]");
-		scan_interval += delta;
-		if (scan_interval > updateRate && readSuccessful)
-		{
-			// GD.Print("\n> [DiffuseSensor.cs] scan_interval");
-			PhysicsDirectSpaceState3D spaceState = GetWorld3D().DirectSpaceState;
-			PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(rayMarker.GlobalPosition, rayMarker.GlobalPosition + GlobalTransform.Basis.Z * distance);
-			query.CollisionMask = 8;
-			var result = spaceState.IntersectRay(query);
+		GD.Print("\n> [DiffuseSensor.cs] [_Ready()]");
+		rayMarker = GetNode<Marker3D>("RayMarker");
+		rayMesh = GetNode<MeshInstance3D>("RayMarker/MeshInstance3D");
 
-			if (result.Count > 0)
-			{
-				// GD.Print("- [DiffuseSensor.cs] TRUE");
-				blocked = true;
-				float resultDistance = rayMarker.GlobalPosition.DistanceTo((Vector3)result["position"]);
-				if (cylinderMesh.Height != resultDistance)
-					cylinderMesh.Height = resultDistance;
-				if (rayMaterial.AlbedoColor != collisionColor)
-					rayMaterial.AlbedoColor = collisionColor;
-			}
-			else
-			{
-				// GD.Print("- [DiffuseSensor.cs] FALSE");
-				blocked = false;
-				if (cylinderMesh.Height != distance)
-					cylinderMesh.Height = distance;
-				if (rayMaterial.AlbedoColor != scanColor)
-					rayMaterial.AlbedoColor = scanColor;
-			}
+		cylinderMesh = rayMesh.Mesh.Duplicate() as CylinderMesh;
+		rayMesh.Mesh = cylinderMesh;
+		rayMaterial = cylinderMesh.Material.Duplicate() as StandardMaterial3D;
+		cylinderMesh.Material = rayMaterial;
 
-			rayMesh.Position = new Vector3(0, 0, cylinderMesh.Height * 0.5f);
-			if (
-				isCommsConnected &&
-				running &&
-				readSuccessful &&
-				tagDiffuseSensor != null &&
-				tagDiffuseSensor != string.Empty
-			)
-			{
-				// GD.Print("- [DiffuseSensor.cs] WRITE");
-				Task.Run(WriteTag);
-			}
-			scan_interval = 0;
-		}
+		// Inicializa visual
+		rayMarker.Visible = debugBeam;
+		rayMaterial.AlbedoColor = scanColor;
+		cylinderMesh.Height = distance;
+		rayMesh.Position = new Vector3(0, 0, cylinderMesh.Height * 0.5f);
 	}
 
-	void OnSimulationStarted()
+	private void Criar_Area_Clicavel()
 	{
-		GD.Print("\n> [DiffuseSensor.cs] [OnSimulationStarted()]");
-		tagDiffuseSensor = SceneComponents.GetComponentByKey(Name, Main.currentScene).Tag;
+		// Cria StaticBody3D para detecção de clique
+		var staticBody = new StaticBody3D { Name = "ClickableArea" };
+		AddChild(staticBody);
+		
+		// Collision shape baseado no corpo do sensor (ajuste conforme seu modelo)
+		var collisionShape = new CollisionShape3D();
+		var boxShape = new BoxShape3D { Size = new Vector3(0.5f, 0.5f, 0.5f) }; // Ajuste o tamanho
+		collisionShape.Shape = boxShape;
+		staticBody.AddChild(collisionShape);
+		
+		// Configuração de camadas (layer para objetos clicáveis)
+		staticBody.CollisionLayer = 16; // Layer 5 (2^4 = 16)
+		staticBody.CollisionMask = 0;
+		
+		clickableArea = staticBody;
+		
+		// Adiciona metadata para identificar este sensor
+		staticBody.SetMeta("sensor_name", Name);
+		staticBody.SetMeta("sensor_instance", this);
+	}
+
+	private void Conectar_Root()
+	{
+		Main = GetTree().CurrentScene as Root;
+
+		if (Main == null)
+		{
+			GD.PrintErr($"\n> [DiffuseSensor.cs] {Name}: Root não encontrado!");
+			return;
+		}
+
+		Main.SimulationStarted += OnSimulationStarted;
+		Main.SimulationEnded += OnSimulationEnded;
+	}
+
+	private void OnSimulationStarted()
+	{
+		tagDiffuseSensor = SceneComponents.GetComponentByKey(Name, Main.currentScene)?.Tag ?? "";
+
+		if (string.IsNullOrEmpty(tagDiffuseSensor))
+		{
+			GD.Print($"\n> [DiffuseSensor.cs] {Name}: Tag OPC não configurada.");
+		}
 
 		var globalVariables = GetNodeOrNull("/root/GlobalVariables");
-		isCommsConnected = (bool)globalVariables.Get("opc_da_connected");
+		isCommsConnected = globalVariables != null && (bool)globalVariables.Get("opc_da_connected");
+
+		savedRotationY = RotationDegrees.Y;
 
 		running = true;
-		if (isCommsConnected)
-		{
-			readSuccessful = true;
-		}
+		blocked = false;
+		lastSentState = false; // Reset do estado
+		scan_interval = 0;
 	}
 
-	void OnSimulationEnded()
+	private void OnSimulationEnded()
 	{
 		running = false;
+		blocked = false;
+		lastSentState = false;
+		
 		cylinderMesh.Height = distance;
 		rayMaterial.AlbedoColor = scanColor;
 		rayMesh.Position = new Vector3(0, 0, cylinderMesh.Height * 0.5f);
 	}
 
-	async Task WriteTag()
+	public override void _PhysicsProcess(double delta)
+	{
+		if (!running) return;
+		
+		scan_interval += delta;
+
+		if (scan_interval < scanRate) return;
+
+		scan_interval = 0;
+
+		bool detectedBlocked = PerformRaycast();
+
+		if (detectedBlocked != blocked)
+		{
+			blocked = detectedBlocked;
+			UpdateVisuals();
+
+			if (isCommsConnected && !string.IsNullOrEmpty(tagDiffuseSensor) && blocked != lastSentState)
+			{
+				lastSentState = blocked;
+				WriteTag();
+			}
+		}
+	}
+
+	private bool PerformRaycast()
+	{
+		PhysicsDirectSpaceState3D spaceState = GetWorld3D().DirectSpaceState;
+		
+		PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(
+			rayMarker.GlobalPosition,
+			rayMarker.GlobalPosition + GlobalTransform.Basis.Z * distance
+		);
+		query.CollisionMask = 8;
+		
+		var result = spaceState.IntersectRay(query);
+		
+		return result.Count > 0;
+	}
+
+	private void UpdateVisuals()
+	{
+		if (blocked)
+		{
+			// Objeto detectado
+			cylinderMesh.Height = distance * 0.5f;
+			rayMaterial.AlbedoColor = collisionColor;
+		}
+		else
+		{
+			// Sem detecção
+			cylinderMesh.Height = distance;
+			rayMaterial.AlbedoColor = scanColor;
+		}
+		
+		rayMesh.Position = new Vector3(0, 0, cylinderMesh.Height * 0.5f);
+	}
+
+	private void WriteTag()
 	{
 		try
 		{
-			await Main.Write(tagDiffuseSensor, blocked);
+			Main.Write(tagDiffuseSensor, blocked);
 		}
-		catch
+		catch (Exception e)
 		{
-			GD.PrintErr("Failure to write: " + tagDiffuseSensor + " in Node: " + Name);
-			readSuccessful = false;
+			GD.PrintErr($"[DiffuseSensor] {Name}: Erro ao escrever {tagDiffuseSensor}:");
+			GD.PrintErr(e.Message);
 		}
+	}
+
+	private void LoadSavedRotation()
+	{
+		var main = GetTree().CurrentScene as Root;
+		if (main == null)
+			return;
+		
+		currentScene = main.currentScene;
+		
+		// Tenta carregar rotação salva
+		float? savedRotation = SceneConfigManager.LoadSensorRotation(Name, currentScene);
+		
+		if (savedRotation.HasValue)
+		{
+			// Se encontrar no JSON: Aplica rotação salva
+			RotationDegrees = new Vector3(RotationDegrees.X, savedRotation.Value, RotationDegrees.Z);
+			GD.Print($"[DiffuseSensor] {Name}: Rotação carregada = {savedRotation.Value:F1}°");
+		}
+		else
+		{
+			// Se NÃO encontrar no JSON: Mantém rotação original da cena
+			GD.Print($"[DiffuseSensor] {Name}: Usando rotação padrão = {originalRotationY:F1}°");
+		}
+	}
+
+	public void RestoreOriginalRotation()
+	{
+		// Não permite durante simulação
+		if (running) 
+			return;
+		
+		// Remover configurações do arquivo JSON
+		SceneConfigManager.RemoveSensorRotation(Name, currentScene);
+		
+		// Volta para rotação original da cena
+		RotationDegrees = new Vector3(RotationDegrees.X, originalRotationY, RotationDegrees.Z);
+		
+		GD.Print($"[DiffuseSensor] {Name}: Restaurado para rotação original = {originalRotationY:F1}°");
+	}
+
+	// Método público para aplicar rotação (chamado pelo UI)
+	public void SetRotationY(float degrees, bool save = false)
+	{
+		// Não permite rotação durante simulação
+		if (running) 
+			return;
+		
+		RotationDegrees = new Vector3(RotationDegrees.X, degrees, RotationDegrees.Z);
+
+		if (save)
+		{
+			SceneConfigManager.SaveSensorRotation(Name, degrees, currentScene);
+		}
+	}
+
+	// Retorna rotação atual
+	public float GetRotationY()
+	{
+		return RotationDegrees.Y;
+	}
+
+	public void ApplyOriginalRotation()
+	{
+		RotationDegrees = new Vector3(RotationDegrees.X, originalRotationY, RotationDegrees.Z);
+		GD.Print($"[DiffuseSensor] {Name}: Rotação aplicada = {originalRotationY:F1}°");
 	}
 }

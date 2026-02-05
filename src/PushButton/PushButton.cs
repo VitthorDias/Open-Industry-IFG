@@ -4,12 +4,8 @@ using System.Threading.Tasks;
 
 public partial class PushButton : Node3D
 {
-	private bool isCommsConnected;
-	float updateRate = 1;
-
-	string text = "stop";
 	[Export]
-	String Text
+	public String Text
 	{
 		get
 		{
@@ -18,17 +14,12 @@ public partial class PushButton : Node3D
 		set
 		{
 			text = value;
-
-			if (textMesh != null)
-			{
-				textMesh.Text = text;
-			}
+			Atualizar_Texto();
 		}
 	}
 
-	bool toggle = false;
 	[Export]
-	bool Toggle
+	public bool Toggle
 	{
 		get
 		{
@@ -37,16 +28,14 @@ public partial class PushButton : Node3D
 		set
 		{
 			toggle = value;
+
 			if (!toggle)
 				pushbutton = false;
 		}
 	}
 
-	bool pushbutton = false;
-
-	bool lamp = false;
 	[Export]
-	bool Lamp
+	public bool Lamp
 	{
 		get
 		{
@@ -55,13 +44,12 @@ public partial class PushButton : Node3D
 		set
 		{
 			lamp = value;
-			SetActive(lamp);
+			Atualizar_Estado_Lamp(lamp);
 		}
 	}
 
-	Color buttonColor = new("#e73d30");
 	[Export]
-	Color ButtonColor
+	public Color ButtonColor
 	{
 		get
 		{
@@ -70,176 +58,299 @@ public partial class PushButton : Node3D
 		set
 		{
 			buttonColor = value;
-			SetButtonColor(buttonColor);
+			Atualizar_Cor_Botao(buttonColor);
 		}
 	}
 
-	MeshInstance3D textMeshInstance;
-	TextMesh textMesh;
+	// Estado
+	private string text = "stop";
+	private bool toggle = false;
+	private bool pushbutton = false;
+	private bool lamp = false;
+	private Color buttonColor = new Color("#e73d30");
+	
+	private bool running = false;
+	private bool isCommsConnected = false;
+	private bool lastSentState = false;
 
-	MeshInstance3D buttonMesh;
-	StandardMaterial3D buttonMaterial;
-	float buttonPressedZPos = -0.04f;
-	bool keyHeld = false;
-	bool keyPressed = false;
+	// TagOpc
+	private string tagPushButton;
 
-	bool readSuccessful = false;
-	bool running = false;
-	double scan_interval = 0;
-	string tagPushButton;
-	Root main;
+	// Componentes
+	private MeshInstance3D textMeshInstance;
+	private TextMesh textMesh;
+	private MeshInstance3D buttonMesh;
+	private StandardMaterial3D buttonMaterial;
+	
+	// Constantes
+	private const float buttonPressedZPos = -0.04f;
+
+	// Referências
 	public Root Main { get; set; }
 
 	public override void _Ready()
 	{
-		GD.Print($"\n> [PushButton.cs] [{Name}] [_Ready()]");
-		Main = GetTree().CurrentScene as Root;
+		Inicializacao_Componentes();
+		Conectar_Root();
+		Inicializacao_Visuais();
+	}
 
-		if (Main != null)
-		{
-			Main.SimulationStarted += OnSimulationStarted;
-			Main.SimulationEnded += OnSimulationEnded;
-		}
+	public override void _ExitTree()
+	{
+		if (Main == null)
+			return;
 
+		Main.SimulationStarted -= OnSimulationStarted;
+		Main.SimulationEnded -= OnSimulationEnded;
+	}
+
+	private void Inicializacao_Componentes()
+	{
 		// Assign 3D text
 		textMeshInstance = GetNode<MeshInstance3D>("TextMesh");
 		textMesh = textMeshInstance.Mesh.Duplicate() as TextMesh;
 		textMeshInstance.Mesh = textMesh;
-		textMesh.Text = text;
 
 		// Assign button
 		buttonMesh = GetNode<MeshInstance3D>("Meshes/Button");
 		buttonMesh.Mesh = buttonMesh.Mesh.Duplicate() as Mesh;
 		buttonMaterial = buttonMesh.Mesh.SurfaceGetMaterial(0).Duplicate() as StandardMaterial3D;
 		buttonMesh.Mesh.SurfaceSetMaterial(0, buttonMaterial);
+	}
 
-		// Initialize properties' states
-		SetButtonColor(ButtonColor);
-		SetActive(Lamp);
+	private void Conectar_Root()
+	{
+		Main = GetTree().CurrentScene as Root;
+
+		if (Main == null)
+		{
+			GD.PrintErr($"[PushButton] {Name}: Root não encontrado!");
+			return;
+		}
+		
+		Main.SimulationStarted += OnSimulationStarted;
+		Main.SimulationEnded += OnSimulationEnded;
+	}
+
+	private void Inicializacao_Visuais()
+	{
+		Atualizar_Texto();
+		Atualizar_Cor_Botao(ButtonColor);
+		Atualizar_Estado_Lamp(Lamp);
+	}
+
+	private void OnSimulationStarted()
+	{
+		// Carrega tag configurada
+		tagPushButton = SceneComponents.GetComponentByKey(Name, Main.currentScene)?.Tag ?? "";
+		
+		if (string.IsNullOrEmpty(tagPushButton))
+		{
+			GD.PrintErr($"[PushButton] {Name}: Tag OPC não configurada!");
+		}
+		
+		// Verifica conexão OPC
+		var globalVariables = GetNodeOrNull("/root/GlobalVariables");
+		isCommsConnected = globalVariables != null && (bool)globalVariables.Get("opc_da_connected");
+		
+		if (isCommsConnected)
+		{
+			GD.Print($"[PushButton] {Name}: OPC conectado → {tagPushButton}");
+		}
+		
+		// Reset de estado
+		running = true;
+		pushbutton = false;
+		lastSentState = false;
+	}
+
+	private void OnSimulationEnded()
+	{
+		running = false;
+		pushbutton = false;
+		lastSentState = false;
+		Lamp = false;
+
+		buttonMesh.Position = Vector3.Zero;
+		Atualizar_Estado_Lamp(false);
 	}
 
 	private void _on_static_body_3d_input_event(Node camera, InputEvent inputEvent, Vector3 position, Vector3 normal, int shapeIdx)
 	{
-		if (inputEvent is InputEventMouseButton mouseEvent)
+		if (!running)
+			return;
+
+		if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
 		{
-			if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
+			if (Toggle)
 			{
-				GD.Print("\n>[PushButton.cs] [_on_static_body_3d_input_event]");
-
-				GD.Print($" - running: {running}");
-				if (!running)
+				if (mouseEvent.Pressed)
 				{
-					pushbutton = false;
-					return;
+					HandleToggleClick();
 				}
-				SetObjectTag();
-
-				pushbutton = !pushbutton;
-				GD.Print($" - pushbutton: {pushbutton}");
-
-				SetActive(pushbutton);
-
-				if (pushbutton)
+			}
+			else
+			{
+				if (mouseEvent.Pressed)
 				{
-					buttonMesh.Position = new Vector3(0, 0, buttonPressedZPos);
+					HandleButtonPress(); // Mouse DOWN
 				}
 				else
 				{
-					buttonMesh.Position = Vector3.Zero;
-				}
-
-				if (
-					isCommsConnected &&
-					readSuccessful &&
-					tagPushButton != null &&
-					tagPushButton != string.Empty
-				)
-				{
-					GD.Print($" - tagPushButton: {tagPushButton}" + " in Node: " + Name);
-					Task.Run(WriteTag);
+					HandleButtonRelease(); // Mouse UP
 				}
 			}
 		}
 	}
 
-	public override void _ExitTree()
+	// Modo Toggle: Alterna estado ao clicar
+	private void HandleToggleClick()
 	{
-		GD.Print($"\n> [PushButton.cs] [{Name}] [_ExitTree()]");
-		if (Main == null) return;
-
-		Main.SimulationStarted -= OnSimulationStarted;
-		Main.SimulationEnded -= OnSimulationEnded;
+		pushbutton = !pushbutton;
+		
+		// Atualiza visual
+		Atualizar_Visual_Botao();
+		Atualizar_Estado_Lamp(pushbutton);
+		
+		// Envia para OPC se estado mudou
+		if (isCommsConnected && !string.IsNullOrEmpty(tagPushButton) && pushbutton != lastSentState)
+		{
+			lastSentState = pushbutton;
+			WriteTag();
+		}
+		
+		if (Main.DebugOpcEvents)
+		{
+			GD.Print($"[PushButton] {Name}: Toggle → {pushbutton}");
+		}
 	}
 
-	async Task WriteTag()
+	// Modo Momentary: Ativa quando pressiona
+	private void HandleButtonPress()
+	{
+		pushbutton = true;
+		
+		// Atualiza visual
+		Atualizar_Visual_Botao();
+		Atualizar_Estado_Lamp(true);
+		
+		// Envia TRUE para OPC
+		if (isCommsConnected && !string.IsNullOrEmpty(tagPushButton))
+		{
+			lastSentState = true;
+			WriteTag();
+		}
+		
+		if (Main.DebugOpcEvents)
+		{
+			GD.Print($"[PushButton] {Name}: Pressionado → True");
+		}
+	}
+
+	// Modo Momentary: Desativa quando solta
+	private void HandleButtonRelease()
+	{
+		pushbutton = false;
+		
+		// Atualiza visual
+		Atualizar_Visual_Botao();
+		Atualizar_Estado_Lamp(false);
+		
+		// Envia FALSE para OPC
+		if (isCommsConnected && !string.IsNullOrEmpty(tagPushButton))
+		{
+			lastSentState = false;
+			WriteTag();
+		}
+		
+		if (Main.DebugOpcEvents)
+		{
+			GD.Print($"[PushButton] {Name}: Solto → False");
+		}
+	}
+
+	private void Atualizar_Visual_Botao()
+	{
+		if (pushbutton)
+		{
+			buttonMesh.Position = new Vector3(0, 0, buttonPressedZPos);
+		}
+		else
+		{
+			buttonMesh.Position = Vector3.Zero;
+		}
+	}
+
+	private void Atualizar_Texto()
+	{
+		if (textMesh != null)
+		{
+			textMesh.Text = text;
+		}
+	}
+	private void Atualizar_Estado_Lamp(bool active)
+	{
+		if (buttonMaterial == null) 
+			return;
+		
+		var textMaterial = new StandardMaterial3D();
+		
+		if (active)
+		{
+			// Acende LED
+			buttonMaterial.EmissionEnergyMultiplier = 1.0f;
+			
+			// Cor do texto baseada no tipo de botão
+			if (text == "Iniciar" || text == "Ligar")
+			{
+				textMaterial.AlbedoColor = new Color(0.2392f, 0.9059f, 0.1882f); // Verde
+			}
+			else if (text == "Pausar" || text == "Desligar")
+			{
+				textMaterial.AlbedoColor = new Color(0.9059f, 0.2392f, 0.1882f); // Vermelho
+			}
+			else
+			{
+				textMaterial.AlbedoColor = new Color(1.0f, 0.6588f, 0.0f); // Laranja
+			}
+		}
+		else
+		{
+			// Apaga LED
+			buttonMaterial.EmissionEnergyMultiplier = 0.0f;
+			textMaterial.AlbedoColor = new Color(1.0f, 0.6588f, 0.0f); // Laranja padrão
+		}
+		
+		if (textMesh != null)
+		{
+			textMesh.Material = textMaterial;
+		}
+	}
+
+	private void Atualizar_Cor_Botao(Color newColor)
+	{
+		if (buttonMaterial != null)
+		{
+			buttonMaterial.AlbedoColor = newColor;
+			buttonMaterial.Emission = newColor;
+		}
+	}
+
+	private void WriteTag()
 	{
 		try
 		{
 			Main.Write(tagPushButton, pushbutton);
+			
+			if (Main.DebugOpcEvents)
+			{
+				GD.Print($"[PushButton] {Name}: {pushbutton} → {tagPushButton}");
+			}
 		}
-		catch
+		catch (Exception e)
 		{
-			GD.PrintErr("Failure to write: " + tagPushButton + " in Node: " + Name);
-			readSuccessful = false;
+			GD.PrintErr($"[PushButton] {Name}: Erro ao escrever {tagPushButton}:");
+			GD.PrintErr(e.Message);
 		}
-	}
-
-	void SetActive(bool newValue)
-	{
-		if (buttonMaterial == null) return;
-
-
-		var material = new StandardMaterial3D();
-
-		if (newValue)
-		{
-			buttonMaterial.EmissionEnergyMultiplier = 1.0f;
-			if (textMesh.Text == "Iniciar" || textMesh.Text == "Ligar") material.AlbedoColor = new Color(0.2392f, 0.9059f, 0.1882f);
-			if (textMesh.Text == "Pausar" || textMesh.Text == "Desligar") material.AlbedoColor = new Color(0.9059f, 0.2392f, 0.1882f);
-			textMesh.Material = material;
-		}
-		else
-		{
-			buttonMaterial.EmissionEnergyMultiplier = 0.0f;
-			material.AlbedoColor = new Color(1.0f, 0.6588f, 0.0f); // Standard color
-			textMesh.Material = material;
-		}
-	}
-
-	void SetButtonColor(Color newValue)
-	{
-		if (buttonMaterial != null)
-		{
-			buttonMaterial.AlbedoColor = newValue;
-			buttonMaterial.Emission = newValue;
-		}
-	}
-
-	void OnSimulationStarted()
-	{
-		GD.Print($"\n> [PushButton.cs] [{Name}] [OnSimulationStarted()]");
-		SetObjectTag();
-
-		var globalVariables = GetNodeOrNull("/root/GlobalVariables");
-		isCommsConnected = (bool)globalVariables.Get("opc_da_connected");
-
-		if (isCommsConnected)
-		{
-			readSuccessful = true;
-		}
-
-		running = true;
-		GD.Print($"- running:{running}");
-	}
-
-	void OnSimulationEnded()
-	{
-		running = false;
-		Lamp = false;
-	}
-
-	void SetObjectTag()
-	{
-		tagPushButton = SceneComponents.GetComponentByKey(Name, Main.currentScene).Tag;
 	}
 }

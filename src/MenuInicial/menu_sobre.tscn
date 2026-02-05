@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://dicqfr4muqy1y"]
+
+[node name="menu_sobre" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextoSobre" type="RichTextLabel" parent="ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_separation = 2
+bbcode_enabled = true
+text = "[center][b]Open Industry IFG[/b][/center]
+
+Este aplicativo foi idealizado e desenvolvido sob a orientação do [b]Prof. Me. Marlon Petri de Lima[/b], com o objetivo de oferecer cenários de testes e simulações que aprimoram o aprendizado prático dos alunos em ambientes institucionais. A equipe de estudantes responsável pela criação do app focou em fornecer uma solução eficaz, com funcionalidades semelhantes às plataformas [b]iFactory[/b] e [b]PLC-Lab 3D Player[/b].
+
+A principal diferença é que o [b]Oi IFG[/b] é totalmente gratuito, tornando-se uma opção acessível para escolas, universidades e professores. Com foco no aprendizado de qualidade, a ferramenta foi projetada para potencializar o desenvolvimento de habilidades essenciais dos alunos, por meio de simulações realistas e desafiadoras que incentivam o pensamento crítico e a resolução de problemas.
+"
+fit_content = true
+scroll_active = false
+
+[node name="TextoDetalhes" type="RichTextLabel" parent="ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+bbcode_enabled = true
+text = "[b]Versão:[/b] 1.0.0.3  
+[b]Desenvolvedores:[/b] Thales Dias
+                                   Vitthor Fernandes
+								   Mariana Milhomem 
+[b]Orientador:[/b] Prof. Me. Marlon Petri de Lima  
+[b]Plataforma:[/b] Godot Engine  
+[b]Local:[/b] Instituto Federal de Goiás"
+fit_content = true
+scroll_active = false

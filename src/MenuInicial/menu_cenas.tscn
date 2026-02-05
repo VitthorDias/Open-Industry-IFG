@@ -1,0 +1,306 @@
+[gd_scene load_steps=5 format=3 uid="uid://byjv3awd8hlvl"]
+
+[ext_resource type="Texture2D" uid="uid://dkr48nne1mf2q" path="res://src/MenuInicial/imagens/cena_1.png" id="1_n8xwy"]
+[ext_resource type="PackedScene" uid="uid://bv0ds2y3s7vgu" path="res://src/MenuInicial/button.tscn" id="2_74rgs"]
+[ext_resource type="Texture2D" uid="uid://dj7eood5el1cp" path="res://src/MenuInicial/imagens/cena_2.png" id="3_vkrxt"]
+[ext_resource type="Texture2D" uid="uid://cvv65q2metfrm" path="res://src/MenuInicial/imagens/cena_3.png" id="4_eg0qd"]
+
+[node name="menu_cenas" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -262.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.12549)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = 235.0
+grow_horizontal = 2
+
+[node name="ContainerCena1" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ContainerCena1"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ContainerCena1/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("1_n8xwy")
+expand_mode = 4
+
+[node name="Cena1" parent="HBoxContainer/ContainerCena1/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 1"
+
+[node name="ContainerCena2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ContainerCena2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ContainerCena2/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_vkrxt")
+expand_mode = 4
+
+[node name="Cena2" parent="HBoxContainer/ContainerCena2/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 2"
+
+[node name="ContainerCena3" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ContainerCena3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ContainerCena3/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("4_eg0qd")
+expand_mode = 4
+
+[node name="Cena3" parent="HBoxContainer/ContainerCena3/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 3"
+
+[node name="ContainerCena4" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ContainerCena4"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ContainerCena4/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("4_eg0qd")
+expand_mode = 4
+
+[node name="Cena4" parent="HBoxContainer/ContainerCena4/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 4"
+
+[node name="ContainerCena5" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ContainerCena5"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ContainerCena5/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("4_eg0qd")
+expand_mode = 4
+
+[node name="Cena5" parent="HBoxContainer/ContainerCena5/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 5"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 2.0
+offset_top = 233.0
+offset_right = -4.0
+offset_bottom = 465.0
+grow_horizontal = 2
+
+[node name="ContainerCena6" type="VBoxContainer" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer2/ContainerCena6"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2/ContainerCena6/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("1_n8xwy")
+expand_mode = 4
+
+[node name="Cena6" parent="HBoxContainer2/ContainerCena6/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 6"
+
+[node name="ContainerCena7" type="VBoxContainer" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer2/ContainerCena7"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2/ContainerCena7/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_vkrxt")
+expand_mode = 4
+
+[node name="Cena7" parent="HBoxContainer2/ContainerCena7/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 7"
+
+[node name="ContainerCena8" type="VBoxContainer" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer2/ContainerCena8"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2/ContainerCena8/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("4_eg0qd")
+expand_mode = 4
+
+[node name="Cena8" parent="HBoxContainer2/ContainerCena8/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 8"
+
+[node name="ContainerCena9" type="VBoxContainer" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer2/ContainerCena9"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2/ContainerCena9/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("4_eg0qd")
+expand_mode = 4
+
+[node name="Cena9" parent="HBoxContainer2/ContainerCena9/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 9"
+
+[node name="ContainerCena10" type="VBoxContainer" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer2/ContainerCena10"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer2/ContainerCena10/ColorRect"]
+layout_mode = 2
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 198.0
+offset_bottom = 172.0
+texture = ExtResource("4_eg0qd")
+expand_mode = 4
+
+[node name="Cena10" parent="HBoxContainer2/ContainerCena10/ColorRect" instance=ExtResource("2_74rgs")]
+layout_mode = 2
+offset_left = -2.0
+offset_top = 200.0
+offset_right = 198.0
+offset_bottom = 226.0
+grow_horizontal = 2
+text = "CENA 10"

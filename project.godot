@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="OI_IFG_4.3"
+config/name="Open-Industry-IFG"
 run/main_scene="res://src/MenuInicial/menu_inicial.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
@@ -26,8 +26,11 @@ file_logging/enable_file_logging=true
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [dotnet]
 
@@ -77,8 +80,4 @@ wheel_down={
 
 [physics]
 
-3d/physics_engine="JoltPhysics3D"
-
-[rendering]
-
-renderer/rendering_method="gl_compatibility"
+3d/physics_engine="Jolt Physics (Extension)"

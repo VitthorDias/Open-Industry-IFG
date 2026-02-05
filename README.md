@@ -2,9 +2,11 @@
 
 Free and open-source industrial simulator as a final project for the undergraduate degree in Control and Automation Engineering at the Federal Institute of Goiás – Goiânia Campus
 
-* Version: 	0.0.2-0
+* Version: 	1.0.0-3
 * Date:		12/03/2025
 * Author: 	[Thales Dias](https://github.com/Thalesdc)
+            [Vitthor Dias](https://github.com/VitthorDias)
+            [Mariana Milhomem]()
 * Advisor:  [Marlon Petri](https://github.com/marlonpetri)
 * Institution:  Federal Institute of Goiás – Goiânia Campus
 

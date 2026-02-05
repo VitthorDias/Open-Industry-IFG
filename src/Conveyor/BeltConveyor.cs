@@ -4,14 +4,6 @@ using System.Threading.Tasks;
 
 public partial class BeltConveyor : Node3D, IBeltConveyor
 {
-
-	private bool isCommsConnected;
-	private bool enableComms;
-	private bool opc_da_connected;
-
-	float updateRate = 1;
-
-	Color beltColor = new Color(1, 1, 1, 1);
 	[Export]
 	public Color BeltColor
 	{
@@ -32,7 +24,6 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 		}
 	}
 
-	IBeltConveyor.ConvTexture beltTexture = IBeltConveyor.ConvTexture.Standard;
 	[Export]
 	public IBeltConveyor.ConvTexture BeltTexture
 	{
@@ -43,6 +34,7 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 		set
 		{
 			beltTexture = value;
+
 			if (beltMaterial != null)
 				((ShaderMaterial)beltMaterial).SetShaderParameter("BlackTextureOn", beltTexture == IBeltConveyor.ConvTexture.Standard);
 			if (conveyorEnd1 != null)
@@ -55,63 +47,42 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 	[Export]
 	public float Speed { get; set; }
 
+	// Visual
+	private Color beltColor = new Color(1, 1, 1, 1);
+
+	private IBeltConveyor.ConvTexture beltTexture = IBeltConveyor.ConvTexture.Standard;
+
+	// Estado
+	private bool running = false;
+	private bool isCommsConnected = false;
+	private double beltPosition = 0.0;
+
+	// TagOpc
+	private string tagEsteira = "";
+
+	// Componentes
+	private RigidBody3D rb;
+	private MeshInstance3D mesh;
+	private Material beltMaterial;
+	private Material metalMaterial;
+	private ConveyorEnd conveyorEnd1;
+	private ConveyorEnd conveyorEnd2;
+
+	// Fisica
 	private Vector3 origin;
-	readonly Guid id = Guid.NewGuid();
-	double scan_interval = 0;
-	bool readSuccessful = false;
 
-	RigidBody3D rb;
-	MeshInstance3D mesh;
-	Material beltMaterial;
-	Material metalMaterial;
-
-	bool running = false;
-	public double beltPosition = 0.0;
-	Vector3 boxSize;
-
-	ConveyorEnd conveyorEnd1;
-	ConveyorEnd conveyorEnd2;
-
-	// TODO: Mudar para atributo do objeto no godot
-	static int currentScene;
-	string tagEsteira;
-
+	// Referências
 	public Root Main { get; set; }
+	private int currentScene;
+	
 
 	public override void _Ready()
 	{
 		GD.Print("\n> [BeltConveyor.cs] [_Ready()]");
-		rb = GetNode<RigidBody3D>("RigidBody3D");
 
-		mesh = GetNode<MeshInstance3D>("RigidBody3D/MeshInstance3D");
-		mesh.Mesh = mesh.Mesh.Duplicate() as Mesh;
-		beltMaterial = mesh.Mesh.SurfaceGetMaterial(0).Duplicate() as Material;
-		metalMaterial = mesh.Mesh.SurfaceGetMaterial(1).Duplicate() as Material;
-		mesh.Mesh.SurfaceSetMaterial(0, beltMaterial);
-		mesh.Mesh.SurfaceSetMaterial(1, metalMaterial);
-		mesh.Mesh.SurfaceSetMaterial(2, metalMaterial);
-
-		conveyorEnd1 = GetNode<ConveyorEnd>("RigidBody3D/Ends/ConveyorEnd");
-		conveyorEnd2 = GetNode<ConveyorEnd>("RigidBody3D/Ends/ConveyorEnd2");
-
-		origin = rb.Position;
-
-		((ShaderMaterial)beltMaterial).SetShaderParameter("BlackTextureOn", beltTexture == IBeltConveyor.ConvTexture.Standard);
-		conveyorEnd1.beltMaterial.SetShaderParameter("BlackTextureOn", beltTexture == IBeltConveyor.ConvTexture.Standard);
-		conveyorEnd2.beltMaterial.SetShaderParameter("BlackTextureOn", beltTexture == IBeltConveyor.ConvTexture.Standard);
-
-		((ShaderMaterial)beltMaterial).SetShaderParameter("ColorMix", beltColor);
-		conveyorEnd1.beltMaterial.SetShaderParameter("ColorMix", beltColor);
-		conveyorEnd2.beltMaterial.SetShaderParameter("ColorMix", beltColor);
-
-		Main = GetTree().CurrentScene as Root;
-		currentScene = Main.currentScene;
-
-		if (Main != null)
-		{
-			Main.SimulationStarted += OnSimulationStarted;
-			Main.SimulationEnded += OnSimulationEnded;
-		}
+		Inicializacao_Componentes3D();
+		Inicializacao_Materials();
+		Conectar_Root();
 	}
 
 	public override void _ExitTree()
@@ -121,84 +92,117 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 
 		Main.SimulationStarted -= OnSimulationStarted;
 		Main.SimulationEnded -= OnSimulationEnded;
+		Main.OpcDataChanged -= OnOpcDataReceived;
 	}
 
-	public override void _PhysicsProcess(double delta)
+	private void Inicializacao_Componentes3D()
 	{
-		// GD.Print("\n> [BeltConveyor.cs] [_PhysicsProcess()]");
-		if (Main == null) return;
+		rb = GetNode<RigidBody3D>("RigidBody3D");
+		mesh = GetNode<MeshInstance3D>("RigidBody3D/MeshInstance3D");
 
-		if (running)
+		mesh.Mesh = mesh.Mesh.Duplicate() as Mesh;
+		beltMaterial = mesh.Mesh.SurfaceGetMaterial(0).Duplicate() as Material;
+		metalMaterial = mesh.Mesh.SurfaceGetMaterial(1).Duplicate() as Material;
+		
+		mesh.Mesh.SurfaceSetMaterial(0, beltMaterial);
+		mesh.Mesh.SurfaceSetMaterial(1, metalMaterial);
+		mesh.Mesh.SurfaceSetMaterial(2, metalMaterial);
+
+		conveyorEnd1 = GetNode<ConveyorEnd>("RigidBody3D/Ends/ConveyorEnd");
+		conveyorEnd2 = GetNode<ConveyorEnd>("RigidBody3D/Ends/ConveyorEnd2");
+
+		origin = rb.Position;
+	}
+	
+	private void Inicializacao_Materials()
+	{
+		// Textura
+		bool isStandard = beltTexture == IBeltConveyor.ConvTexture.Standard;
+		
+		if (beltMaterial != null)
+			((ShaderMaterial)beltMaterial).SetShaderParameter("BlackTextureOn", isStandard);
+		
+		if (conveyorEnd1 != null)
+			((ShaderMaterial)conveyorEnd1.beltMaterial).SetShaderParameter("BlackTextureOn", isStandard);
+		
+		if (conveyorEnd2 != null)
+			((ShaderMaterial)conveyorEnd2.beltMaterial).SetShaderParameter("BlackTextureOn", isStandard);
+
+		// Cores
+		if (beltMaterial != null)
+			((ShaderMaterial)beltMaterial).SetShaderParameter("ColorMix", beltColor);
+		
+		if (conveyorEnd1 != null)
+			((ShaderMaterial)conveyorEnd1.beltMaterial).SetShaderParameter("ColorMix", beltColor);
+		
+		if (conveyorEnd2 != null)
+			((ShaderMaterial)conveyorEnd2.beltMaterial).SetShaderParameter("ColorMix", beltColor);
+	
+	}
+	
+	private void Conectar_Root()
+	{
+		Main = GetTree().CurrentScene as Root;
+
+		if (Main == null)
 		{
-			var localLeft = rb.GlobalTransform.Basis.X.Normalized();
-			var velocity = localLeft * Speed;
-			rb.LinearVelocity = velocity;
-			rb.Position = origin;
-
-			beltPosition += Speed * delta;
-			if (Speed != 0)
-				((ShaderMaterial)beltMaterial).SetShaderParameter("BeltPosition", beltPosition * Mathf.Sign(Speed));
-			if (beltPosition >= 1.0)
-				beltPosition = 0.0;
-
-			rb.Rotation = Vector3.Zero;
-			rb.Scale = new Vector3(1, 1, 1);
-
-			if (
-				isCommsConnected &&
-				readSuccessful &&
-				tagEsteira != null &&
-				tagEsteira != string.Empty
-			)
-			{
-				scan_interval += delta;
-				if (scan_interval > updateRate && readSuccessful)
-				{
-					scan_interval = 0;
-					Task.Run(ScanTag);
-				}
-			}
+			GD.PrintErr($"[BeltConveyor] {Name}: Root não encontrado!");
+			return;
 		}
 
-		Scale = new Vector3(Scale.X, 1, Scale.Z);
+		currentScene = Main.currentScene;
 
-		if (beltMaterial != null && Speed != 0)
-			((ShaderMaterial)beltMaterial).SetShaderParameter("Scale", Scale.X * Mathf.Sign(Speed));
-
-		if (metalMaterial != null && Speed != 0)
-			((ShaderMaterial)metalMaterial).SetShaderParameter("Scale", Scale.X);
+		Main.SimulationStarted += OnSimulationStarted;
+		Main.SimulationEnded += OnSimulationEnded;
+		Main.OpcDataChanged += OnOpcDataReceived;
 	}
 
-	void OnSimulationStarted()
+	private void OnSimulationStarted()
 	{
 		GD.Print("\n> [BeltConveyor.cs] [OnSimulationStarted()]");
 
+		// Carrega a Tag Configurada	
+		tagEsteira = SceneComponents.GetComponentByKey(Name, currentScene)?.Tag ?? "";
+
+		if (string.IsNullOrEmpty(tagEsteira))
+		{
+			GD.PrintErr($"[BeltConveyor] {Name}: Tag OPC não configurada!");
+		}
+
+		// Verificar a conexão OPC
 		var globalVariables = GetNodeOrNull("/root/GlobalVariables");
-		isCommsConnected = (bool)globalVariables.Get("opc_da_connected");
-
-		// Name is the Node proprety to get current Node name		
-		tagEsteira = SceneComponents.GetComponentByKey(Name.ToString(), currentScene).Tag;
-
-		if (Main == null) return;
-		running = true;
+		isCommsConnected = globalVariables != null && (bool)globalVariables.Get("opc_da_connected");
 
 		if (isCommsConnected)
 		{
-			readSuccessful = true;
+			GD.Print($"[BeltConveyor] {Name}: OPC conectado → {tagEsteira}");
 		}
+		else
+		{
+			GD.PrintErr($"[BeltConveyor] {Name}: OPC não conectado - esteira parada!");
+		}
+		
+		// Reset do estado
+		running = true;
+		Speed = 0f;
+		beltPosition = 0.0;
 	}
 
-	void OnSimulationEnded()
+	private void OnSimulationEnded()
 	{
 		running = false;
-
+		Speed = 0f;
 		beltPosition = 0;
+		
+		// Reset visual
 		((ShaderMaterial)beltMaterial).SetShaderParameter("BeltPosition", beltPosition);
-
+		
+		// Reset física
 		rb.Position = Vector3.Zero;
 		rb.Rotation = Vector3.Zero;
 		rb.LinearVelocity = Vector3.Zero;
-
+		
+		// Reset filhos
 		foreach (Node3D child in rb.GetChildren())
 		{
 			child.Position = Vector3.Zero;
@@ -206,18 +210,65 @@ public partial class BeltConveyor : Node3D, IBeltConveyor
 		}
 	}
 
-	async Task ScanTag()
-	{
+	private void OnOpcDataReceived(string tagName, object value)
+    {
+        // Recebe sinal de disparo do OPC via subscription
+        if (tagName != tagEsteira || value == null)
+			return;
+		
 		try
 		{
-			// GD.Print("\n> [BeltConveyor.cs] [ScanTag()]");
-			Speed = await Main.ReadFloat(tagEsteira);
+			float newSpeed = Convert.ToSingle(value);
+			
+			// Atualiza velocidade apenas se mudou significativamente
+			if (Mathf.Abs(newSpeed - Speed) > 0.01f)
+			{
+				Speed = newSpeed;
+				
+				if (Main.DebugOpcEvents)
+				{
+					GD.Print($"[BeltConveyor] {Name}: Speed = {Speed:F2}");
+				}
+			}
 		}
-		catch(Exception err)
+		catch (Exception e)
 		{
-			GD.PrintErr($"\n> Failure to read: {tagEsteira} in Node: {Name}");
-			GD.PrintErr(err);
-			readSuccessful = false;
+			GD.PrintErr($"[BeltConveyor] {Name}: Erro ao converter velocidade de {tagName}: {e.Message}");
+		}
+    }
+
+	public override void _PhysicsProcess(double delta)
+	{
+		// GD.Print("\n> [BeltConveyor.cs] [_PhysicsProcess()]");
+		if (Main == null || !running)
+			return;
+		
+		// Atualiza Movimento
+		var localLeft = rb.GlobalTransform.Basis.X.Normalized();
+		var velocity = localLeft * Speed;
+		rb.LinearVelocity = velocity;
+		rb.Position = origin;
+
+		beltPosition += Speed * delta;
+		if (beltPosition >= 1.0)
+			beltPosition = 0.0;
+
+		if (Speed != 0)
+			((ShaderMaterial)beltMaterial).SetShaderParameter("BeltPosition", beltPosition * Mathf.Sign(Speed));
+
+		rb.Rotation = Vector3.Zero;
+		rb.Scale = new Vector3(1, 1, 1);
+
+		// Atualiza Shader
+		Scale = new Vector3(Scale.X, 1, Scale.Z);
+
+		if (Speed != 0)
+		{
+			if (beltMaterial != null)
+				((ShaderMaterial)beltMaterial).SetShaderParameter("Scale", Scale.X * Mathf.Sign(Speed));
+			
+			if (metalMaterial != null)
+				((ShaderMaterial)metalMaterial).SetShaderParameter("Scale", Scale.X);
 		}
 	}
 }

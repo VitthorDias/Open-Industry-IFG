@@ -1,52 +1,83 @@
-[gd_scene load_steps=5 format=3 uid="uid://bc71peokxkxdb"]
+[gd_scene load_steps=7 format=3 uid="uid://bc71peokxkxdb"]
 
 [ext_resource type="Script" path="res://src/MenuInterface/SimulationControl.gd" id="1_30drp"]
-[ext_resource type="Texture2D" uid="uid://cqnbdea8nnd8y" path="res://src/MenuInterface/Icons/Play.png" id="1_ujh07"]
-[ext_resource type="Texture2D" uid="uid://dynl8o5s60tyc" path="res://src/MenuInterface/Icons/Pause.png" id="2_m4lop"]
-[ext_resource type="Texture2D" uid="uid://bnsp75yxkq34f" path="res://src/MenuInterface/Icons/Stop.png" id="3_wxgve"]
+[ext_resource type="Texture2D" uid="uid://gicaadqhxt65" path="res://src/MenuInterface/Icons/white_pause_icon.png" id="2_gyuk7"]
+[ext_resource type="Texture2D" uid="uid://clfevcimv1s0k" path="res://src/MenuInterface/Icons/white_start_icon.png" id="3_to4l3"]
+[ext_resource type="Texture2D" uid="uid://biw8wp8gw0mf5" path="res://src/MenuInterface/Icons/white_stop_icon.png" id="4_7qvuv"]
+[ext_resource type="Texture2D" uid="uid://duik0th1cm282" path="res://src/MenuInicial/imagens/white_config_icon.png" id="5_c0712"]
 
-[node name="RunBar" type="PanelContainer"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eernq"]
+
+[node name="Simulation_Control" type="PanelContainer"]
 process_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -66.0
-offset_right = 154.0
-offset_bottom = 48.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_eernq")
 script = ExtResource("1_30drp")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+color = Color(0.176471, 0.176471, 0.176471, 0.878431)
+
+[node name="TextoCommsState" type="RichTextLabel" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Status Comunicação OPC DA"
+fit_content = true
+autowrap_mode = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 8
+alignment = 1
 
 [node name="Play" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 24
-text = "Start
-"
-icon = ExtResource("1_ujh07")
+theme_override_font_sizes/font_size = 16
+icon = ExtResource("3_to4l3")
 
 [node name="Pause" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 16
 disabled = true
 toggle_mode = true
-text = "Pause"
-icon = ExtResource("2_m4lop")
+icon = ExtResource("2_gyuk7")
 
 [node name="Stop" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 16
 disabled = true
-text = "Stop
-"
-icon = ExtResource("3_wxgve")
+icon = ExtResource("4_7qvuv")
+
+[node name="Inputs" type="Button" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+disabled = true
+icon = ExtResource("5_c0712")
+
+[node name="Outputs" type="Button" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+disabled = true
+icon = ExtResource("5_c0712")
+
+[node name="MenuButton" type="MenuButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "MENU"
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="HBoxContainer/Play" to="." method="on_play_pressed"]
 [connection signal="pressed" from="HBoxContainer/Pause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="HBoxContainer/Stop" to="." method="_on_stop_pressed"]
+[connection signal="pressed" from="HBoxContainer/Inputs" to="." method="_on_inputs_pressed"]
+[connection signal="pressed" from="HBoxContainer/Outputs" to="." method="_on_outputs_pressed"]
